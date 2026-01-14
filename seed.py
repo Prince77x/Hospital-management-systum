@@ -1,6 +1,5 @@
 from app import app
-from circular import db
-from models import Admin, Doctor
+from models import db, Admin, Doctor
 
 with app.app_context():
 

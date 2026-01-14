@@ -1,5 +1,5 @@
- 
-from circular import db
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 from datetime import datetime
 
  # Doctor model
