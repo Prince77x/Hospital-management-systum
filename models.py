@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
+
 from datetime import datetime
 
  # Doctor model
@@ -9,7 +10,8 @@ class Doctor(db.Model):
     speciality = db.Column(db.String(100),nullable=False)
     doc_email = db.Column(db.String(100), unique=True, nullable=False)
     doc_phone = db.Column(db.String(10), unique=True, nullable=False)
-    
+    doc_password = db.Column(db.String(16), nullable = False)
+
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=False)
     appointments = db.relationship('Appointment', backref='doctor', lazy=True)
 
@@ -20,7 +22,8 @@ class Patient(db.Model):
     pat_age = db.Column(db.Integer,nullable=False)
     pat_email = db.Column(db.String(100), unique=True, nullable=False)
     pat_phone = db.Column(db.String(10), unique=True, nullable=False)
-
+    pat_password = db.Column(db.String(16), nullable=False)
+    
     appointments = db.relationship('Appointment', backref='patient', lazy=True)
 
 # Department model
