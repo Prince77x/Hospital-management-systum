@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login page</title>
+</head>
+<body>
+    <div>
+        <h2>Enter your Login credentials</h2>
+        <form action="/login" method="POST">
+            {{ form.hidden_tag() }}
+
+            {{ form.username.label }}
+            {{ form.username() }}
+            {% for error in form.username.errors %}
+                <p style="color:red">{{ error }}</p>
+            {% endfor %}
+
+            {{ form.password.label }}
+            {{ form.password() }}
+            {% for error in form.password.errors %}
+                <p style="color:red">{{ error }}</p>
+            {% endfor %}
+            {{ form.submit() }}
+            
+        </form>
+        <h4>Don't have an account? <a href="/register">Register here</a></h4>
+    </div>
+</body>
+</html>

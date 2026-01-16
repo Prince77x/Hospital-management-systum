@@ -1,10 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 db = SQLAlchemy()
 
 from datetime import datetime
 
  # Doctor model
-class Doctor(db.Model):
+class Doctor(db.Model, UserMixin):
     id = db.Column(db.Integer,primary_key = True, unique=True)
     doc_name = db.Column(db.String(100), nullable=False)
     speciality = db.Column(db.String(100),nullable=False)
@@ -16,14 +17,14 @@ class Doctor(db.Model):
     appointments = db.relationship('Appointment', backref='doctor', lazy=True)
 
 # Patient model
-class Patient(db.Model):
+class Patient(db.Model, UserMixin):
     id = db.Column(db.Integer,primary_key = True, unique=True)
     pat_name = db.Column(db.String(100), nullable=False)
     pat_age = db.Column(db.Integer,nullable=False)
     pat_email = db.Column(db.String(100), unique=True, nullable=False)
     pat_phone = db.Column(db.String(10), unique=True, nullable=False)
     pat_password = db.Column(db.String(16), nullable=False)
-    
+
     appointments = db.relationship('Appointment', backref='patient', lazy=True)
 
 # Department model
@@ -54,7 +55,7 @@ class Treatment(db.Model):
 
 
 # Admin model
-class Admin(db.Model):
+class Admin(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(70), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)

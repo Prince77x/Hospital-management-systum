@@ -6,7 +6,7 @@ class RegisterForm(FlaskForm):
     pat_name = StringField("Full Name", validators=[DataRequired(), Length(min=3, max=50)])
     pat_age = IntegerField("Patient Age", validators=[DataRequired()])
     pat_email = EmailField("Email", validators=[DataRequired(),Email()])
-    pat_phone = IntegerField("Enter your Phone number:", validators=[DataRequired()])
+    pat_phone = StringField("Enter your Phone number:", validators=[DataRequired(), Length(min=10, max=10)])
     pat_password = PasswordField("Password",validators=[DataRequired(),Length(max=16)])
     submit = SubmitField("Register")
 

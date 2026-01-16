@@ -1,10 +1,15 @@
-from flask import Flask, jsonify, request , redirect, render_template 
+from flask import Flask, jsonify, request , redirect, render_template, url_for,flash
 from models import db, Admin, Doctor, Patient, Department, Appointment, Treatment  # Importing the model after db is initialized
 from flask_migrate import Migrate
-from forms import RegisterForm
-from werkzeug.security import generate_password_hash
+from forms import RegisterForm, LoginForm
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, login_user, logout_user, login_required
 app = Flask(__name__)
 
+# flask configuration 
+loginmanager = LoginManager()
+loginmanager.init_app(app)
+loginmanager.login_view = "login"
 
 # App configuration 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///HospitalData.db' #Tells Flask where DB is stored
@@ -17,6 +22,12 @@ migrate = Migrate(app, db)
 with app.app_context(): #Temporarily activate Flask’s application environment so SQLAlchemy can access the app configuration (like the database URI).”
     db.create_all() # it will create database for each model or classes in sqlite/mysql/postgresql
 
+#USER LOADER
+@loginmanager.user_loader
+def load_user(user_id):
+    return Patient.query.get(int(user_id))
+
+
 
 # Define routes here 
 @app.route('/') 
@@ -24,7 +35,7 @@ def home():
     return render_template('./index.html')
 
 #registering route 
-@app.route('/registerP', methods=["GET","POST"])
+@app.route('/register', methods=["GET","POST"])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
@@ -36,10 +47,26 @@ def register():
         patient = Patient(pat_name=form.pat_name.data, pat_age=form.pat_age.data, pat_email=form.pat_email.data, pat_phone=form.pat_phone.data, pat_password=password_hased)
         db.session.add(patient)
         db.session.commit()
-        return "you have regidte successfully"
+        flash("You have registered successfully")
+        return redirect(url_for('login'))
     
-    return render_template("./auth/register.html", form=form)
+    return render_template("register.html", form=form)
 
+@app.route('/pat/login',methods=["GET","POST"])
+def pat_login():
+    form = LoginForm()
+    if form.validate_on_submit():
+
+        patient = Patient.query.filter_by(pat_email= form.username.data).first()
+        if patient and check_password_hash(patient.pat_password, form.password.data):
+            login_user(patient)
+            flash("You have logged in successfully")
+            return render_template('./patient/patients_dashboard.html')
+        else:
+            flash("Invalid credential")
+        
+    return render_template('login.html', form=form)
+        
 
 '''
 @app.route('/datacheckup')

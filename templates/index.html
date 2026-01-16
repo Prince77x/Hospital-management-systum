@@ -1,11 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <h1>HOME page</h1>
-</body>
+  </head>
+  <style>
+    .login-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Login Button */
+    .login-btn {
+      background-color: #ff6b2c;
+      color: white;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Dropdown Box */
+    .login-dropdown {
+      position: absolute;
+      top: 45px;
+      right: 0;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      width: 180px;
+      display: none;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    /* Dropdown Links */
+    .login-dropdown a {
+      display: block;
+      padding: 12px 16px;
+      text-decoration: none;
+      color: #333;
+      font-size: 15px;
+      transition: background 0.2s;
+    }
+
+    .login-dropdown a:hover {
+      background-color: #f5f5f5;
+    }
+
+    /* ⭐ MAGIC: Show dropdown on hover */
+    .login-wrapper:hover .login-dropdown {
+      display: block;
+    }
+  </style>
+  <body>
+    <div class="login-wrapper">
+      <button class="login-btn">Login ▼</button>
+
+      <div class="login-dropdown">
+        <a href="/user-login">👤 User Login</a>
+        <a href="{{ url_for('pat_login')}}">🧑‍⚕️ Patient Login</a>
+      </div>
+    </div>
+  </body>
 </html>
