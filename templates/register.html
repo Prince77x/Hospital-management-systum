@@ -8,7 +8,7 @@
 <body>
     <div>
         <h2>Register Here</h2>
-        <form method="POST" action="/registerP">
+        <form method="POST" action="/register">
         {{ form.hidden_tag() }}
 
         {{ form.pat_name.label }} <br>
@@ -45,7 +45,7 @@
         {{ form.submit() }}
         </form>
 
-        <h4>Already have an account? <a href="/pat/login">Login here</a></h4>
+        <h4>Already have an account? <a href="/patient/login">Login here</a></h4>
     </div>
 </body>
 </html>

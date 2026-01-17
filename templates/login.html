@@ -8,7 +8,17 @@
 <body>
     <div>
         <h2>Enter your Login credentials</h2>
-        <form action="/login" method="POST">
+        <form action="/patient/login" method="POST">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+            <ul>
+                    {% for msg in messages %}
+                    <li style="color:red">{{ msg }}</li>
+                    {% endfor %}
+            </ul>
+                {% endif %}
+            {% endwith %}
+
             {{ form.hidden_tag() }}
 
             {{ form.username.label }}
