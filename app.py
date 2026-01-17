@@ -67,11 +67,31 @@ def patient_login():
         
     return render_template('login.html', form=form)
 
+@app.route('/admin/login', methods=["GET","POST"])
+def admin_login():
+    form= LoginForm()
+    if form.validate_on_submit():
+
+        admin = Admin.query.filter_by(email = form.username.data).first()
+        if admin and check_password_hash(admin.password, form.password.data):
+            login_user(admin)
+            flash("you have logged in as admin")
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash('invalid credential')
+            return redirect(url_for('admin_login'))
+    return render_template('./admin/admin_login.html', form=form)
+
+
 @app.route('/patient/dashboard')
 @login_required
 def patient_dashboard():
     return render_template('./patient/patient_dashboard.html')
         
+@app.route('/admin/admin_dashboard')
+@login_required
+def admin_dashboard():
+    return render_template('./admin/admin_dashboard.html')
 
 '''
 @app.route('/datacheckup')

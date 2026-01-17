@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login page</title>
+</head>
+<body>
+    <div>
+        <h2>Enter your Login credentials</h2>
+        <form action="/admin/login" method="POST">
+            <!-- this will flash massages -->
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+            <ul>
+                    {% for msg in messages %}
+                    <li style="color:red">{{ msg }}</li>
+                    {% endfor %}
+            </ul>
+                {% endif %}
+            {% endwith %}
+
+            {{ form.hidden_tag() }}
+
+            {{ form.username.label }}
+            {{ form.username() }}
+            {% for error in form.username.errors %}
+                <p style="color:red">{{ error }}</p>
+            {% endfor %}
+
+            {{ form.password.label }}
+            {{ form.password() }}
+            {% for error in form.password.errors %}
+                <p style="color:red">{{ error }}</p>
+            {% endfor %}
+            {{ form.submit() }}
+            
+        </form>
+        <h4>Admin already seeded </h4>
+    </div>
+</body>
+</html>
