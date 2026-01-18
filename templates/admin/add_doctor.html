@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Doctor</title>
+</head>
+<body>
+
+<h2>Add Doctor</h2>
+
+<form method="POST" action="/admin/add_doctor" >
+    <label>Name:</label><br>
+    <input type="text" name="doc_name" required><br><br>
+
+    <label>Email:</label><br>
+    <input type="email" name="doc_email" required><br><br>
+
+    <label>Phone:</label><br>
+    <input type="text" name="doc_phone" required><br><br>
+
+    <label>Department ID:</label><br>
+    <input type="text" name="department_id" required><br><br>
+    
+
+    <label>Speciality:</label><br>
+    <input type="text" name="speciality" required><br><br>
+
+    <label>Password:</label><br>
+    <input type="password" name="password" required><br><br>
+
+    <button type="submit">Save Doctor</button>
+</form>
+
+<a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+
+</body>
+</html>

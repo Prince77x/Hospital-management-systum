@@ -93,6 +93,39 @@ def patient_dashboard():
 def admin_dashboard():
     return render_template('./admin/admin_dashboard.html')
 
+@app.route('/admin/add_doctor', methods=["GET","POST"])
+@login_required
+def add_doctor():
+    if request.method == "POST":
+        name = request.form.get('doc_name')
+        speciality = request.form.get('speciality')
+        email = request.form.get('doc_email')
+        phone = request.form.get('doc_phone')
+        department_id = request.form.get('department_id')
+        password_hash = generate_password_hash(request.form.get('password'))
+
+        doctor = Doctor(doc_name=name,speciality=speciality,doc_phone=phone,doc_email=email,department_id=department_id,doc_password=password_hash)
+
+        db.session.add(doctor)
+        db.session.commit()
+        flash('Doctor added successfully')
+        return redirect(url_for('admin_dashboard'))
+    
+    return render_template('./admin/add_doctor.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 '''
 @app.route('/datacheckup')
 def datacheckup():
