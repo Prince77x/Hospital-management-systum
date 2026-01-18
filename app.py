@@ -82,6 +82,21 @@ def admin_login():
             return redirect(url_for('admin_login'))
     return render_template('./admin/admin_login.html', form=form)
 
+@app.route('/doctor/login', methods=["GET","POST"])
+def doctor_login():
+    form= LoginForm()
+    if form.validate_on_submit():
+
+        doctor= Doctor.query.filter_by(doc_email = form.username.data).first()
+        if doctor and check_password_hash(doctor.doc_password, form.password.data):
+            login_user(doctor)
+            flash("welcome Doctor ! you are logedin")
+            return redirect(url_for('doctor_dashboard'))
+        else:
+            flash('Invalid credential')
+            return redirect(url_for('doctor_login'))
+    return render_template('./doctor/doctor_login.html' , form=form)
+
 
 @app.route('/patient/dashboard')
 @login_required
@@ -92,6 +107,11 @@ def patient_dashboard():
 @login_required
 def admin_dashboard():
     return render_template('./admin/admin_dashboard.html')
+
+@app.route('/doctor/dashboard')
+@login_required
+def doctor_dashboard():
+    return render_template('./doctor/doctor_dashboard.html')
 
 @app.route('/admin/add_doctor', methods=["GET","POST"])
 @login_required

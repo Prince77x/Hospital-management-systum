@@ -8,7 +8,7 @@
 <body>
     <div>
         <h2>Enter your Login credentials</h2>
-        <form action="/patient/login" method="POST">
+        <form action="/doctor/login" method="POST">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
             <ul>
@@ -35,7 +35,7 @@
             {{ form.submit() }}
             
         </form>
-        <h4>Don't have an account? <a href="/register">Register here</a></h4>
+        <h4>Don't have an account? Ask Admin To Add You</h4>
     </div>
 </body>
 </html>
