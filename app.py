@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, request , redirect, render_template, url_for,flash
+from flask import Flask, jsonify, request , redirect, render_template, url_for,flash,abort
 from models import db, Admin, Doctor, Patient, Department, Appointment, Treatment  # Importing the model after db is initialized
 from flask_migrate import Migrate
 from forms import RegisterForm, LoginForm
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 app = Flask(__name__)
 
 # flask configuration 
@@ -24,8 +24,13 @@ with app.app_context(): #Temporarily activate Flask’s application environment 
 
 # user loader 
 @loginmanager.user_loader
-def load_patient(user_id):
-    return Patient.query.get(int(user_id))
+def load_user(user_id):
+     return (
+         Admin.query.get(int(user_id)) or
+         Doctor.query.get(int(user_id)) or 
+         Patient.query.get(int(user_id))
+         
+     )
 
 # Define routes here 
 @app.route('/') 
@@ -106,7 +111,9 @@ def patient_dashboard():
 @app.route('/admin/admin_dashboard')
 @login_required
 def admin_dashboard():
-    return render_template('./admin/admin_dashboard.html')
+    if not isinstance(current_user, Admin):
+        abort(403)
+    return render_template('./admin/admin_dashboard.html', admin_name = current_user.name)
 
 @app.route('/doctor/dashboard')
 @login_required
