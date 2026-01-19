@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 app = Flask(__name__)
 
-# flask configuration 
+# flask_login configuration 
 loginmanager = LoginManager()
 loginmanager.init_app(app)
 loginmanager.login_view = "patient_login"
@@ -140,7 +140,12 @@ def add_doctor():
     
     return render_template('./admin/add_doctor.html')
 
-
+@app.route('/admin/logout')
+@login_required
+def logout_admin():
+    logout_user()
+    flash("logout succesfully")
+    return redirect(url_for("home"))
 
 
 
