@@ -114,7 +114,8 @@ def admin_dashboard():
     if not isinstance(current_user, Admin):
         abort(403)
     doctors = Doctor.query.all()
-    return render_template('./admin/admin_dashboard.html', admin_name=current_user.name, doctors=doctors)
+    patients = Patient.query.all()
+    return render_template('./admin/admin_dashboard.html', admin_name=current_user.name, doctors=doctors, patients=patients)
 
 @app.route('/doctor/dashboard')
 @login_required
@@ -192,11 +193,33 @@ def view_doctor(doctor_id):
     doctor = Doctor.query.get_or_404(doctor_id)
     return render_template('./admin/view_doctor.html', doctor=doctor)
 
+@app.route('/admin/edit_patient/<int:patient_id>', methods=["GET","POST"])
+@login_required
+def edit_patient(patient_id):
+    if not isinstance(current_user,Admin):
+        abort(403)
 
+    patient = Patient.query.get_or_404(patient_id)
+    if request.method == "POST":
+        patient.pat_name = request.form.get('patient_name')
+        patient.pat_email = request.form.get('patient_email')
+        patient.pat_phone = request.form.get('patient_phone')
 
+        db.session.commit()
+        flash('Patient updated successfully')
+        return redirect(url_for('admin_dashboard'))
+    return render_template('./patient/edit_patient.html', patient=patient)
 
+@app.route('/admin/delete_patient/<int:patient_id>')
+@login_required
+def delete_patient(patient_id):
+    if not isinstance(current_user, Admin):
+        abort(403)
 
-
+    patient = Patient.query.get_or_404(patient_id)
+    db.session.delete(patient)
+    db.session.commit()
+    return redirect(url_for('admin_dashboard'))
 
 '''
 @app.route('/datacheckup')

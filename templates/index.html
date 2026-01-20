@@ -1,70 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <style>
-    .login-wrapper {
-      position: relative;
-      display: inline-block;
-    }
+    <title>Hospital Management System</title>
 
-    /* Login Button */
-    .login-btn {
-      background-color: #ff6b2c;
-      color: white;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-left: 200px;
-    }
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+        }
 
-    /* Dropdown Box */
-    .login-dropdown {
-      position: absolute;
-      top: 40px;
-      right: 0;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      width: 180px;
-      display: none;
-      overflow: hidden;
-      z-index: 1000;
-    }
+        /* ===== Header ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
 
-    /* Dropdown Links */
-    .login-dropdown a {
-      display: block;
-      padding: 12px 16px;
-      text-decoration: none;
-      color: #333;
-      font-size: 15px;
-      transition: background 0.2s;
-    }
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
 
-    .login-dropdown a:hover {
-      background-color: #f5f5f5;
-    }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-    /* ⭐ MAGIC: Show dropdown on hover */
-    .login-wrapper:hover .login-dropdown {
-      display: block;
-    }
-  </style>
-  <body>
-    <div class="login-wrapper">
-      <button class="login-btn">Login ▼</button>
+        /* ===== Login Dropdown ===== */
+        .login-wrapper {
+            position: relative;
+        }
 
-      <div class="login-dropdown">
-        <a href="{{ url_for('patient_login')}}">🧑‍⚕️ Patient Login</a>
-         <a href="{{ url_for('admin_login')}}">Admin Login</a>
-        <a href="{{ url_for('doctor_login')}}">Doctor Login</a>
-      </div>
+        .login-btn {
+            background-color: #ff6b2c;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #e85c20;
+        }
+
+        .login-dropdown {
+            position: absolute;
+            top: 35px;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            width: 190px;
+            display: none;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .login-dropdown a {
+            display: block;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .login-dropdown a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .login-wrapper:hover .login-dropdown {
+            display: block;
+        }
+
+        /* ===== Sign Up Button ===== */
+        .signup-btn {
+            background: transparent;
+            border: 2px solid #3498db;
+            color: #3498db;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .signup-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(120deg, #3498db, #2ecc71);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ===== Navigation Bar ===== -->
+<div class="navbar">
+    <div class="logo">🏥 HMS Portal</div>
+
+    <div class="nav-actions">
+        <div class="login-wrapper">
+            <button class="login-btn">Login ▼</button>
+
+            <div class="login-dropdown">
+                <a href="{{ url_for('patient_login') }}">🧑‍⚕️ Patient Login</a>
+                <a href="{{ url_for('admin_login') }}">🛡️ Admin Login</a>
+                <a href="{{ url_for('doctor_login') }}">👨‍⚕️ Doctor Login</a>
+            </div>
+        </div>
+
+        <a href="{{ url_for('register') }}" class="signup-btn">Sign Up</a>
     </div>
-  </body>
+</div>
+
+<!-- ===== Hero Section ===== -->
+<div class="hero">
+    <h1>Hospital Management System</h1>
+    <p>
+        Book appointments, manage doctors, and track treatments —
+        all in one secure platform.
+    </p>
+</div>
+
+</body>
 </html>

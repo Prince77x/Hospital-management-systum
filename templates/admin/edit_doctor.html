@@ -1,58 +1,121 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Doctor</title>
-  </head>
-  <body>
-    <form
-      method="POST"
-      action="{{ url_for('edit_doctor', doctor_id=doctor.id) }}"
-    >
-      <label>Name:</label><br />
-      <input
-        type="text"
-        name="doc_name"
-        value="{{ doctor.doc_name }}"
-        required
-      /><br /><br />
 
-      <label>Email:</label><br />
-      <input
-        type="email"
-        name="doc_email"
-        value="{{ doctor.doc_email }}"
-        required
-      /><br /><br />
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
 
-      <label>Phone:</label><br />
-      <input
-        type="text"
-        name="doc_phone"
-        value="{{ doctor.doc_phone }}"
-        required
-      /><br /><br />
+        .container {
+            max-width: 520px;
+            margin: 60px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
 
-      <label>Department ID:</label><br />
-      <input
-        type="text"
-        name="department_id"
-        value="{{ doctor.department_id }}"
-        required
-      /><br /><br />
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c3e50;
+        }
 
-      <label>Speciality:</label><br />
-      <input
-        type="text"
-        name="speciality"
-        value="{{ doctor.speciality }}"
-        required
-      /><br /><br />
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 6px;
+        }
 
-      <button type="submit">Update Doctor</button>
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 4px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-update {
+            background: #3498db;
+            color: #fff;
+        }
+
+        .btn-update:hover {
+            background: #2980b9;
+        }
+
+        .btn-back {
+            background: #7f8c8d;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .btn-back:hover {
+            background: #636e72;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🩺 Edit Doctor</h2>
+
+    <form method="POST" action="{{ url_for('edit_doctor', doctor_id=doctor.id) }}">
+        <label>Name</label>
+        <input type="text" name="doc_name" value="{{ doctor.doc_name }}" required>
+
+        <label>Email</label>
+        <input type="email" name="doc_email" value="{{ doctor.doc_email }}" required>
+
+        <label>Phone</label>
+        <input type="text" name="doc_phone" value="{{ doctor.doc_phone }}" required>
+
+        <label>Department ID</label>
+        <input type="text" name="department_id" value="{{ doctor.department_id }}" required>
+
+        <label>Speciality</label>
+        <input type="text" name="speciality" value="{{ doctor.speciality }}" required>
+
+        <div class="btn-group">
+            <button type="submit" class="btn-update">Update</button>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn-back">Back</a>
+        </div>
     </form>
+</div>
 
-    <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
-  </body>
+</body>
 </html>

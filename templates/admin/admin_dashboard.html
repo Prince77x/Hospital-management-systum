@@ -15,7 +15,7 @@
     }
 
     .container {
-      width: 85%;
+      width: 95%;
       margin: auto;
       background: white;
       padding: 20px;
@@ -159,9 +159,7 @@
             <span>{{ doc.doc_name }}</span>
             <span>{{ doc.speciality }}</span>
             <div class="actions">
-              <a href="{{ url_for('edit_doctor', doctor_id=doc.id) }}"
-                ><button class="btn edit">Edit</button></a
-              >
+              <a href="{{ url_for('edit_doctor', doctor_id=doc.id) }}"><button class="btn edit">Edit</button></a>
               <a href="{{ url_for('delete_doctor', doctor_id=doc.id )}}"><button class="btn delete">Delete</button></a>
               <a href="{{ url_for('view_doctor', doctor_id= doc.id )}}"><button class="btn blacklist">View Doctor</button></a>
             </div>
@@ -173,25 +171,19 @@
       <!-- Registered Patients -->
       <section>
         <h2>Registered Patients</h2>
-
-        <div class="card">
-          <span>Mr. abcde</span>
-          <div class="actions">
-            <button class="btn edit">Edit</button>
-            <button class="btn delete">Delete</button>
-            <button class="btn blacklist">Blacklist</button>
+        <div style="max-height: 300px; overflow-y: auto">
+          {% for patient in patients %}
+          <div class="card">
+            <span>{{ patient.pat_name }}</span>
+            
+            <div class="actions">
+              <a href="{{ url_for('edit_patient', patient_id=patient.id) }}"><button class="btn edit">Edit</button></a>
+              <a href="{{ url_for('delete_patient', patient_id=patient.id) }}"><button class="btn delete">Delete</button></a>
+             <!--  <a href=" "><button class="btn blacklist">Blacklist</button></a>-->
+            </div>
           </div>
+          {% endfor %}
         </div>
-
-        <div class="card">
-          <span>Miss. Pqrst</span>
-          <div class="actions">
-            <button class="btn edit">Edit</button>
-            <button class="btn delete">Delete</button>
-            <button class="btn blacklist">Blacklist</button>
-          </div>
-        </div>
-      </section>
 
       <!-- Upcoming Appointments -->
       <section>
