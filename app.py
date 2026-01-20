@@ -113,7 +113,8 @@ def patient_dashboard():
 def admin_dashboard():
     if not isinstance(current_user, Admin):
         abort(403)
-    return render_template('./admin/admin_dashboard.html', admin_name = current_user.name)
+    doctors = Doctor.query.all()
+    return render_template('./admin/admin_dashboard.html', admin_name=current_user.name, doctors=doctors)
 
 @app.route('/doctor/dashboard')
 @login_required
@@ -148,9 +149,48 @@ def logout_admin():
     return redirect(url_for("home"))
 
 
+@app.route('/admin/edit_doctor/<int:doctor_id>', methods=["GET","POST"])
+@login_required
+def edit_doctor(doctor_id):
+    if not isinstance(current_user, Admin):
+        abort(403)
+
+    doctor = Doctor.query.get_or_404(doctor_id)
+
+    if request.method == "POST":
+        doctor.doc_name = request.form.get('doc_name')
+        doctor.speciality = request.form.get('speciality')
+        doctor.doc_email = request.form.get('doc_email')
+        doctor.doc_phone = request.form.get('doc_phone')
+        doctor.department_id = request.form.get('department_id')
+
+        db.session.commit()
+        flash('Doctor updated successfully')
+        return redirect(url_for('admin_dashboard'))
+    
+    return render_template('./admin/edit_doctor.html',doctor=doctor)
+
+@app.route('/admin/delete_doctor/<int:doctor_id>')
+@login_required
+def delete_doctor(doctor_id):
+    if not isinstance(current_user, Admin):
+        abort(403)
+    
+    doctor = Doctor.query.get_or_404(doctor_id)
+    db.session.delete(doctor)
+    db.session.commit()
+    flash('Doctor deleted successfully')
+    return redirect(url_for('admin_dashboard'))
 
 
-
+@app.route('/admin/view_doctor/<int:doctor_id>')
+@login_required
+def view_doctor(doctor_id):
+    if not isinstance(current_user, Admin):
+        abort(403)
+    
+    doctor = Doctor.query.get_or_404(doctor_id)
+    return render_template('./admin/view_doctor.html', doctor=doctor)
 
 
 

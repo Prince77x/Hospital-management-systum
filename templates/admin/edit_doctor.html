@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Doctor</title>
+  </head>
+  <body>
+    <form
+      method="POST"
+      action="{{ url_for('edit_doctor', doctor_id=doctor.id) }}"
+    >
+      <label>Name:</label><br />
+      <input
+        type="text"
+        name="doc_name"
+        value="{{ doctor.doc_name }}"
+        required
+      /><br /><br />
+
+      <label>Email:</label><br />
+      <input
+        type="email"
+        name="doc_email"
+        value="{{ doctor.doc_email }}"
+        required
+      /><br /><br />
+
+      <label>Phone:</label><br />
+      <input
+        type="text"
+        name="doc_phone"
+        value="{{ doctor.doc_phone }}"
+        required
+      /><br /><br />
+
+      <label>Department ID:</label><br />
+      <input
+        type="text"
+        name="department_id"
+        value="{{ doctor.department_id }}"
+        required
+      /><br /><br />
+
+      <label>Speciality:</label><br />
+      <input
+        type="text"
+        name="speciality"
+        value="{{ doctor.speciality }}"
+        required
+      /><br /><br />
+
+      <button type="submit">Update Doctor</button>
+    </form>
+
+    <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+  </body>
+</html>
