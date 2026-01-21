@@ -185,6 +185,25 @@
           {% endfor %}
         </div>
 
+    <!-- Department table -->
+      <section>
+        <h2>Departments</h2><span> <a href="{{url_for('add_department')}}"><button>Add</button></a></span>
+         
+        <div style="max-height: 300px; overflow-y: auto">
+          {% for dep in departments %}
+          <div class="card">
+            <span>{{ dep.dept_name }}</span>
+            
+            <div class="actions">
+               
+              <a href="{{ url_for('delete_department', department_id=dep.id) }}"><button class="btn delete">Delete</button></a>
+              
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        
+
       <!-- Upcoming Appointments -->
       <section>
         <h2>Upcoming Appointments</h2>

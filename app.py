@@ -113,7 +113,8 @@ def admin_dashboard():
         abort(403)
     doctors = Doctor.query.all()
     patients = Patient.query.all()
-    return render_template('./admin/admin_dashboard.html', admin_name=current_user.name, doctors=doctors, patients=patients)
+    departments = Department.query.all()
+    return render_template('./admin/admin_dashboard.html', admin_name=current_user.name, doctors=doctors, patients=patients, departments=departments)
 
 @app.route('/doctor/dashboard')
 @login_required
@@ -219,13 +220,45 @@ def delete_patient(patient_id):
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
 
+@app.route('/admin/add_department', methods=['GET','POST'])
+@login_required
+def add_department():
+    if not isinstance(current_user,Admin):
+        abort(403)
+    if request.method == "POST":
+
+        department = Department.query.filter_by(dept_name= request.form.get('dep_name')).first()
+        if department :
+            return "Department already exist "
+        department = Department(dept_name=request.form.get('dep_name'),location=request.form.get('dep_location'))
+        db.session.add(department)
+        db.session.commit()
+        flash('Department Updated')
+        return redirect(url_for('admin_dashboard'))
+    return render_template('./admin/add_department.html')
+
+@app.route('/admin/delete_department/<int:department_id>')
+@login_required
+def delete_department(department_id):
+    if not isinstance(current_user,Admin):
+        abort(403)
+    department = Department.query.get_or_404(department_id)
+    # Check if any doctors are assigned to this department
+    if Doctor.query.filter_by(department_id=department_id).first():
+        flash('Cannot delete department: doctors are assigned to it. Please reassign or remove doctors first.')
+        return redirect(url_for('admin_dashboard'))
+    db.session.delete(department)
+    db.session.commit()
+    flash('Department deleted successfully.')
+    return redirect(url_for('admin_dashboard'))
 
 ## PATIENT ROUTES
 @app.route('/patient/dashboard')
 @login_required
 def patient_dashboard():
     patients = Patient.query.all()
-    return render_template('./patient/patient_dashboard.html')
+    departments = Department.query.all()
+    return render_template('./patient/patient_dashboard.html',departments=departments)
         
 @app.route('/patient/patient_profile/<int:patient_id>')
 @login_required

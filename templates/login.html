@@ -9,6 +9,7 @@
     <div>
         <h2>Enter your Login credentials</h2>
         <form action="/patient/login" method="POST">
+            <!-- 
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
             <ul>
@@ -17,7 +18,7 @@
                     {% endfor %}
             </ul>
                 {% endif %}
-            {% endwith %}
+            {% endwith %}-->
 
             {{ form.hidden_tag() }}
 
