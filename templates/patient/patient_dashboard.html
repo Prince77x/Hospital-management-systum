@@ -1,11 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient dashboard</title>
+  <meta charset="UTF-8">
+  <title>Patients Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    .dashboard {
+      width: 85%;
+      max-width: 1100px;
+      margin: 40px auto;
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 20px;
+      border-bottom: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .header a {
+      margin-left: 12px;
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    .header a:hover {
+      text-decoration: underline;
+    }
+
+    /* Section */
+    .section {
+      padding: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .section h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+
+    /* Department List */
+    .dept-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #ccc;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    .btn {
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-view {
+      background: #e7f1ff;
+      color: #007bff;
+      border: 1px solid #007bff;
+    }
+
+    .btn-view:hover {
+      background: #d0e6ff;
+    }
+
+    /* Appointment Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    .btn-cancel {
+      background: #fff;
+      color: red;
+      border: 2px solid red;
+      border-radius: 6px;
+      padding: 6px 12px;
+    }
+
+    .btn-cancel:hover {
+      background: #ffe5e5;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Patient Dashboard</h1>
+
+  <h2 style="text-align:center;margin-top:20px;">Patients' Dashboard</h2>
+
+  <div class="dashboard">
+
+    <!-- Welcome Bar -->
+    <div class="header">
+      <div>Welcome {{ current_user.pat_name }}</div>
+      <div>
+        <a href="{{ url_for('patient_profile', patient_id=current_user.id) }}"> Profile</a> |
+        <a href="">History</a> |
+        <a href="{{ url_for('patient_logout')}}">logout</a>
+      </div>
+    </div>
+
+    <!-- Departments -->
+    <div class="section">
+      <h3>Departments</h3>
+
+      {% for dept in departments %}
+      <div class="dept-row">
+        <span>{{ dept.dept_name }}</span>
+        <a href="">
+          <button class="btn btn-view">view details</button>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Upcoming Appointments -->
+    <div class="section">
+      <h3>Upcoming Appointments</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Sr No.</th>
+            <th>Doctor Name</th>
+            <th>Deptt</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for appt in appointments %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ appt.doctor.doc_name }}</td>
+            <td>{{ appt.doctor.department.dept_name }}</td>
+            <td>{{ appt.date.strftime('%d/%m/%Y') }}</td>
+            <td>08 am - 12 pm</td>
+            <td>
+              <a href="">
+                <button class="btn btn-cancel">cancel</button>
+              </a>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="6">No upcoming appointments</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
 </body>
 </html>

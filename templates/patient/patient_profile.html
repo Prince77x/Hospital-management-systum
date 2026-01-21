@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Profile</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .profile-container {
+      max-width: 500px;
+      margin: 60px auto;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .profile-header h2 {
+      margin: 0;
+      color: #333;
+    }
+
+    .profile-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .profile-item:last-child {
+      border-bottom: none;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .value {
+      color: #333;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      font-size: 15px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-edit {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-edit:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-back {
+      display: inline-block;
+      margin-top: 15px;
+      color: #555;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .btn-back:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="profile-container" >
+    
+    <div class="profile-header">
+      <h2>Patient Profile</h2>
+    </div>
+
+    <div class="profile-item">
+      <span class="label">Name</span>
+      <span class="value">{{current_user.pat_name}}</span>
+    </div>
+
+    <div class="profile-item">
+      <span class="label">Age</span>
+      <span class="value">{{ current_user.pat_age }}</span>
+    </div>
+
+    <div class="profile-item">
+      <span class="label">Phone</span>
+      <span class="value">{{ current_user.pat_phone }}</span>
+    </div>
+
+    <div class="profile-item">
+      <span class="label">Email</span>
+      <span class="value">{{ current_user.pat_email }}</span>
+    </div>
+
+    <div class="actions">
+      <a href="{{url_for('patient_edit',patient_id=patient.id)}}">
+        <button class="btn btn-edit">Edit Profile</button>
+      </a>
+      <br />
+      <a href="{{ url_for('patient_dashboard')}}" class="btn-back">
+        ← Back to Dashboard
+      </a>
+    </div>
+
+  </div>
+
+</body>
+</html>

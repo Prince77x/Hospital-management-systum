@@ -56,6 +56,8 @@ def register():
     
     return render_template("register.html", form=form)
 
+## LOGIN ROUTE
+
 @app.route('/patient/login',methods=["GET","POST"])
 def patient_login():
     form = LoginForm()
@@ -102,12 +104,8 @@ def doctor_login():
             return redirect(url_for('doctor_login'))
     return render_template('./doctor/doctor_login.html' , form=form)
 
-
-@app.route('/patient/dashboard')
-@login_required
-def patient_dashboard():
-    return render_template('./patient/patient_dashboard.html')
-        
+## ADMIN DASHBOARD ROUTE
+ 
 @app.route('/admin/admin_dashboard')
 @login_required
 def admin_dashboard():
@@ -220,6 +218,52 @@ def delete_patient(patient_id):
     db.session.delete(patient)
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
+
+
+## PATIENT ROUTES
+@app.route('/patient/dashboard')
+@login_required
+def patient_dashboard():
+    patients = Patient.query.all()
+    return render_template('./patient/patient_dashboard.html')
+        
+@app.route('/patient/patient_profile/<int:patient_id>')
+@login_required
+def patient_profile(patient_id):
+    if not isinstance(current_user, Patient):
+        abort(403)
+
+    patient = Patient.query.get_or_404(patient_id)
+    return render_template('./patient/patient_profile.html', patient=patient)
+
+@app.route('/patient/patient_edit/<int:patient_id>', methods=['GET','POST'])
+@login_required
+def patient_edit(patient_id):
+    if not isinstance(current_user,Patient):
+        abort(403)
+    patient = Patient.query.get_or_404(patient_id)
+    if request.method == 'POST':
+        patient.pat_name = request.form.get("patient_name")
+        patient.pat_email = request.form.get("patient_email")
+        patient.pat_phone = request.form.get("patient_phone")
+
+        db.session.commit()
+        flash("Profile updated sucessfully ")
+        return redirect(url_for('patient_dashboard'))
+    return render_template('./patient/patient_edit.html', patient=patient)
+
+@app.route('/patient/logout')
+@login_required
+def patient_logout():
+    if not isinstance(current_user,Patient):
+        abort(403)
+    logout_user()
+    return redirect(url_for('home'))
+
+
+
+## DOCTOR ROUTE
+
 
 '''
 @app.route('/datacheckup')
