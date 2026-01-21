@@ -1,233 +1,230 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Patient Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Patient Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f4f6f8;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
 
-    h2 {
-      text-align: center;
-      margin: 30px 0 10px;
-    }
+      h2 {
+        text-align: center;
+        margin: 30px 0 10px;
+      }
 
-    .dashboard {
-      width: 90%;
-      max-width: 1200px;
-      margin: 0 auto 40px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      overflow: hidden;
-    }
+      .dashboard {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto 40px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
 
-    /* Header */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 24px;
-      background: #0d6efd;
-      color: #fff;
-    }
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+        background: #0d6efd;
+        color: #fff;
+      }
 
-    .header a {
-      color: #fff;
-      margin-left: 15px;
-      text-decoration: none;
-      font-size: 14px;
-    }
+      .header a {
+        color: #fff;
+        margin-left: 15px;
+        text-decoration: none;
+        font-size: 14px;
+      }
 
-    .header a:hover {
-      text-decoration: underline;
-    }
+      .header a:hover {
+        text-decoration: underline;
+      }
 
-    /* Sections */
-    .section {
-      padding: 25px;
-      border-bottom: 1px solid #eee;
-    }
+      /* Sections */
+      .section {
+        padding: 25px;
+        border-bottom: 1px solid #eee;
+      }
 
-    .section:last-child {
-      border-bottom: none;
-    }
+      .section:last-child {
+        border-bottom: none;
+      }
 
-    .section h3 {
-      margin-top: 0;
-      margin-bottom: 15px;
-      color: #0d6efd;
-    }
+      .section h3 {
+        margin-top: 0;
+        margin-bottom: 15px;
+        color: #0d6efd;
+      }
 
-    /* Department Cards */
-    .dept-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 15px;
-    }
+      /* Department Cards */
+      .dept-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 15px;
+      }
 
-    .dept-card {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
-      background: #fafafa;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+      .dept-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background: #fafafa;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-    .dept-card span {
-      font-weight: 600;
-    }
+      .dept-card span {
+        font-weight: 600;
+      }
 
-    .btn {
-      padding: 6px 14px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-    }
+      .btn {
+        padding: 6px 14px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+      }
 
-    .btn-view {
-      background: #e7f1ff;
-      color: #0d6efd;
-      border: 1px solid #0d6efd;
-    }
+      .btn-view {
+        background: #e7f1ff;
+        color: #0d6efd;
+        border: 1px solid #0d6efd;
+      }
 
-    .btn-view:hover {
-      background: #d0e6ff;
-    }
+      .btn-view:hover {
+        background: #d0e6ff;
+      }
 
-    /* Table */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
+      /* Table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
 
-    th, td {
-      padding: 12px;
-      border: 1px solid #ddd;
-      text-align: center;
-      font-size: 14px;
-    }
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+        font-size: 14px;
+      }
 
-    th {
-      background: #f1f3f5;
-      font-weight: 600;
-    }
+      th {
+        background: #f1f3f5;
+        font-weight: 600;
+      }
 
-    tr:hover {
-      background: #fafafa;
-    }
+      tr:hover {
+        background: #fafafa;
+      }
 
-    .btn-cancel {
-      background: #fff;
-      color: #dc3545;
-      border: 2px solid #dc3545;
-      border-radius: 6px;
-      padding: 6px 12px;
-      cursor: pointer;
-    }
+      .btn-cancel {
+        background: #fff;
+        color: #dc3545;
+        border: 2px solid #dc3545;
+        border-radius: 6px;
+        padding: 6px 12px;
+        cursor: pointer;
+      }
 
-    .btn-cancel:hover {
-      background: #ffe5e5;
-    }
+      .btn-cancel:hover {
+        background: #ffe5e5;
+      }
 
-    .empty-row {
-      color: #888;
-      font-style: italic;
-    }
-  </style>
-</head>
+      .empty-row {
+        color: #888;
+        font-style: italic;
+      }
+    </style>
+  </head>
 
-<body>
+  <body>
+    <h2>Patient Dashboard</h2>
 
-<h2>Patient Dashboard</h2>
-
-<div class="dashboard">
-
-  <!-- Header -->
-  <div class="header">
-    <div>Welcome, <strong>{{ current_user.pat_name }}</strong></div>
-    <div>
-      <a href="{{ url_for('patient_profile', patient_id=current_user.id) }}">Profile</a>
-      <a href="#">History</a>
-      <a href="{{ url_for('patient_logout') }}">Logout</a>
-    </div>
-  </div>
-
-  <!-- Departments -->
-  <div class="section">
-    <h3>Departments</h3>
-
-    <div class="dept-list">
-      {% for dep in departments %}
-      <div class="dept-card">
-        <span>{{ dep.dept_name }}</span>
-        <a href="#">
-          <button class="btn btn-view">View</button>
-        </a>
+    <div class="dashboard">
+      <!-- Header -->
+      <div class="header">
+        <div>Welcome, <strong>{{ current_user.pat_name }}</strong></div>
+        <div>
+          <a href="{{ url_for('patient_profile', patient_id=current_user.id) }}"
+            >Profile</a
+          >
+          <a href="#">History</a>
+          <a href="{{ url_for('patient_logout') }}">Logout</a>
+        </div>
       </div>
-      {% else %}
-      <p>No departments available</p>
-      {% endfor %}
-    </div>
-  </div>
 
-  <!-- Upcoming Appointments -->
-  <div class="section">
-    <h3>Upcoming Appointments</h3>
+      <!-- Departments -->
+      <div class="section">
+        <h3>Departments</h3>
 
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Doctor</th>
-          <th>Department</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {% for appt in appointments %}
-        <tr>
-          <td>{{ loop.index }}</td>
-          <td>{{ appt.doctor.doc_name }}</td>
-          <td>{{ appt.doctor.department.dept_name }}</td>
-          <td>{{ appt.date.strftime('%d/%m/%Y') }}</td>
-          <td>08:00 – 12:00</td>
-          <td>
-            <a href="#">
-              <button class="btn-cancel">Cancel</button>
+        <div class="dept-list">
+          {% for dep in departments %}
+          <div class="dept-card">
+            <span>{{ dep.dept_name }}</span>
+            <a href="{{ url_for('department_details', department_id=dep.id) }}">
+              <button class="btn btn-view">View</button>
             </a>
-          </td>
-        </tr>
-        {% else %}
-        <tr>
-          <td colspan="6" class="empty-row">
-            No upcoming appointments
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+          </div>
+          {% else %}
+          <p>No departments available</p>
+          {% endfor %}
+        </div>
+      </div>
 
-</div>
+      <!-- Upcoming Appointments -->
+      <div class="section">
+        <h3>Upcoming Appointments</h3>
 
-</body>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Doctor</th>
+              <th>Department</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for appt in appointments %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ appt.doctor.doc_name }}</td>
+              <td>{{ appt.doctor.department.name }}</td>
+              <td>{{ appt.date.strftime('%d/%m/%Y') }}</td>
+              <td>08:00 – 12:00</td>
+              <td>
+                <a href="#">
+                  <button class="btn-cancel">Cancel</button>
+                </a>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="6" class="empty-row">No upcoming appointments</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
 </html>

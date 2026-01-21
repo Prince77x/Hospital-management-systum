@@ -258,7 +258,9 @@ def delete_department(department_id):
 def patient_dashboard():
     patients = Patient.query.all()
     departments = Department.query.all()
-    return render_template('./patient/patient_dashboard.html',departments=departments)
+    doctors = Doctor.query.all()
+    appointments = Appointment.query.filter_by(patient_id=current_user.id).all()
+    return render_template('./patient/patient_dashboard.html',departments=departments,doctors=doctors, appointments=appointments)
         
 @app.route('/patient/patient_profile/<int:patient_id>')
 @login_required
@@ -293,6 +295,19 @@ def patient_logout():
     logout_user()
     return redirect(url_for('home'))
 
+@app.route('/patient/department_details/<int:department_id>')
+@login_required
+def department_details(department_id):
+    if not isinstance(current_user,Patient):
+        abort(403)
+    department = Department.query.get_or_404(department_id)
+    speciality = request.args.get('speciality')
+    if speciality:
+        doctors = Doctor.query.filter(Doctor.department_id == department_id, Doctor.speciality == speciality).all()
+    else:
+        doctors = Doctor.query.filter_by(department_id=department_id).all()
+    return render_template('./patient/department_details.html',department=department, doctors=doctors)
+    
 
 
 ## DOCTOR ROUTE
