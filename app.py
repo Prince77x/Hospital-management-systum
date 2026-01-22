@@ -308,7 +308,7 @@ def department_details(department_id):
         doctors = Doctor.query.filter_by(department_id=department_id).all()
     return render_template('./patient/department_details.html',department=department, doctors=doctors)
 
-@app.route('/patient/view_details/<int:doctor_id>')
+@app.route('/patient/view_details/<int:doctor_id>') 
 @login_required
 def view_details(doctor_id):
     doctor = Doctor.query.get_or_404(doctor_id)
