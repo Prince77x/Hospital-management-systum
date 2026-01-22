@@ -307,8 +307,18 @@ def department_details(department_id):
     else:
         doctors = Doctor.query.filter_by(department_id=department_id).all()
     return render_template('./patient/department_details.html',department=department, doctors=doctors)
-    
 
+@app.route('/patient/view_details/<int:doctor_id>')
+@login_required
+def view_details(doctor_id):
+    doctor = Doctor.query.get_or_404(doctor_id)
+   
+    return render_template('./patient/view_details.html', doctor=doctor)
+    
+@app.route('/patient/check_availabity')
+@login_required
+def check_availabity():
+    return render_template('./patient/check_availabity.html')
 
 ## DOCTOR ROUTE
 
