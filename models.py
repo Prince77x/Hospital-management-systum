@@ -60,3 +60,12 @@ class Admin(db.Model, UserMixin):
     name = db.Column(db.String(70), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(20), nullable=False)
+
+# Doctor availability
+class DoctorAvailability(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key = True)
+    date = db.Column(db.Date, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+    is_available = db.Column(db.Boolean, default=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)

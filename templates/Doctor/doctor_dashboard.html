@@ -1,11 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor dashboard</title>
+  <meta charset="UTF-8">
+  <title>Doctor Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .dashboard {
+      width: 85%;
+      max-width: 1100px;
+      margin: 30px auto;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding-bottom: 20px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 20px;
+      border-bottom: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .header a {
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    /* Section */
+    .section {
+      padding: 20px;
+    }
+
+    .section h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background: #f2f2f2;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-update {
+      background: #e7f1ff;
+      color: #007bff;
+      border: 1px solid #007bff;
+    }
+
+    .btn-complete {
+      background: #e6f8ec;
+      color: #28a745;
+      border: 1px solid #28a745;
+    }
+
+    .btn-cancel {
+      background: #fff;
+      color: red;
+      border: 2px solid red;
+    }
+
+    .btn-view {
+      background: #e7f1ff;
+      color: #007bff;
+      border: 1px solid #007bff;
+    }
+
+    /* Assigned Patients */
+    .patient-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #ccc;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+
+    /* Availability Button */
+    .availability {
+      text-align: right;
+      padding: 0 20px;
+    }
+
+    .btn-availability {
+      background: #e6f8ec;
+      color: #28a745;
+      border: 2px solid #28a745;
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Doctor Dashboard</h1>
+
+<h2>Doctors' Dashboard</h2>
+
+<div class="dashboard">
+
+  <!-- Header -->
+  <div class="header">
+    <div>Welcome Dr. {{ current_user.doc_name }}</div>
+    <div>
+      <a href="{{ url_for('doctor_logout')}}">Logout</a>
+    </div>
+  </div>
+
+  <!-- Upcoming Appointments -->
+  <div class="section">
+    <h3>Upcoming Appointments</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Sr No.</th>
+          <th>Patient Name</th>
+          <th>Patient History</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for appt in appointments %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ appt.patient.pat_name }}</td>
+          <td>
+            <a href=" ">
+              <button class="btn btn-update">Update</button>
+            </a>
+          </td>
+          <td>
+            <a href=" ">
+              <button class="btn btn-complete">Mark as Complete</button>
+            </a>
+            <a href=" ">
+              <button class="btn btn-cancel">Cancel</button>
+            </a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="4">No upcoming appointments</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Assigned Patients -->
+  <div class="section">
+    <h3>Assigned Patients</h3>
+
+    {% for patient in assigned_patients %}
+    <div class="patient-row">
+      <span>{{ patient.pat_name }}</span>
+      <a href=" ">
+        <button class="btn btn-view">View</button>
+      </a>
+    </div>
+    {% else %}
+      <p>No assigned patients</p>
+    {% endfor %}
+  </div>
+
+  <!-- Availability -->
+  <div class="availability">
+    <a href="{{ url_for('doctor_availability')}}">
+      <button class="btn btn-availability">Provide Availability</button>
+    </a>
+  </div>
+
+</div>
+
 </body>
 </html>

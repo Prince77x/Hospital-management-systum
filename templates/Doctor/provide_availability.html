@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Doctor Availability</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .availability-grid {
+      display: grid;
+      grid-template-columns: 150px 200px 200px;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .date-box {
+      background: #eaf6ff;
+      padding: 10px;
+      text-align: center;
+      border: 2px solid #333;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    /* hide checkbox */
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    .slot-card {
+      border: 2px solid red;
+      padding: 12px;
+      text-align: center;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.2s;
+    }
+
+    /* available (saved) */
+    input:checked + .slot-card {
+      border-color: green;
+      color: green;
+    }
+
+    /* selected but not saved yet */
+    .slot-card.selected {
+      border-color: #1e90ff;
+      color: #1e90ff;
+      background: #eef6ff;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: green;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Doctor's Availability</h2>
+
+<form method="POST">
+  <div class="availability-grid">
+
+    {% for slot in slots %}
+      <!-- Date -->
+      <div class="date-box">
+        {{ slot.date.strftime('%d/%m/%Y') }}
+      </div>
+
+      <!-- Morning Slot -->
+      <label>
+        <input type="checkbox"
+               name="slots"
+               value="{{ slot.id }}"
+               {% if slot.is_available %}checked{% endif %}>
+        <div class="slot-card">
+          {{ slot.start_time.strftime('%H:%M') }} -
+          {{ slot.end_time.strftime('%H:%M') }}
+        </div>
+      </label>
+    {% endfor %}
+
+  </div>
+
+  <button type="submit">Save Availability</button>
+</form>
+
+<script>
+  document.querySelectorAll('.slot-card').forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.toggle('selected');
+    });
+  });
+</script>
+
+</body>
+</html>

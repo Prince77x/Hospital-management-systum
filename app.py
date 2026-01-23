@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request , redirect, render_template, url_for,flash,abort
-from models import db, Admin, Doctor, Patient, Department, Appointment, Treatment  # Importing the model after db is initialized
+from models import db, Admin, Doctor, Patient, Department, Appointment, Treatment ,DoctorAvailability # Importing the model after db is initialized
 from flask_migrate import Migrate
 from forms import RegisterForm, LoginForm
+from datetime import datetime
+from datetime import date, timedelta, time
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 app = Flask(__name__)
@@ -321,6 +323,71 @@ def check_availabity():
     return render_template('./patient/check_availabity.html')
 
 ## DOCTOR ROUTE
+@app.route('/doctor/doctor_logout')
+@login_required
+def doctor_logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+ 
+
+def generate_week_slots(doctor_id):
+    today = date.today()
+
+    morning = (time(8, 0), time(12, 0))
+    evening = (time(16, 0), time(21, 0))
+
+    for i in range(7):
+        slot_date = today + timedelta(days=i)
+
+        for start, end in [morning, evening]:
+            exists = DoctorAvailability.query.filter_by(
+                doctor_id=doctor_id,
+                date=slot_date,
+                start_time=start,
+                end_time=end
+            ).first()
+
+            if not exists:
+                db.session.add(
+                    DoctorAvailability(
+                        doctor_id=doctor_id,
+                        date=slot_date,
+                        start_time=start,
+                        end_time=end,
+                        is_available=False
+                    )
+                )
+    db.session.commit()
+
+@app.route('/doctor/availability', methods=['GET', 'POST'])
+@login_required
+def doctor_availability():
+    generate_week_slots(current_user.id)
+
+    if request.method == 'POST':
+        selected_slots = request.form.getlist('slots')
+
+        # reset all to unavailable
+        DoctorAvailability.query.filter_by(
+            doctor_id=current_user.id
+        ).update({DoctorAvailability.is_available: False})
+
+        # mark selected as available
+        for slot_id in selected_slots:
+            slot = DoctorAvailability.query.get(int(slot_id))
+            slot.is_available = True
+
+        db.session.commit()
+        flash("Availability updated successfully")
+        return redirect(url_for('doctor_dashboard'))
+
+    slots = DoctorAvailability.query.filter_by(
+        doctor_id=current_user.id
+    ).order_by(DoctorAvailability.date).all()
+
+    return render_template('./Doctor/provide_availability.html', slots=slots)
+
 
 
 '''
