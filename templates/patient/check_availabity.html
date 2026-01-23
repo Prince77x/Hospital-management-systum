@@ -1,150 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Doctor Availability</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Doctor Availability</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f6f7;
-    }
+<style>
+body {
+    font-family: Arial, sans-serif;
+}
 
-    .container {
-      width: 900px;
-      margin: 40px auto;
-      background: #fff;
-      border: 2px solid #333;
-      padding: 20px;
-    }
+.container {
+    width: 900px;
+    margin: auto;
+    border: 2px solid #333;
+    padding: 20px;
+}
 
-    h2 {
-      margin-bottom: 20px;
-    }
+h2 {
+    margin-bottom: 20px;
+}
 
-    .row {
-      display: grid;
-      grid-template-columns: 150px 1fr 1fr;
-      gap: 15px;
-      margin-bottom: 12px;
-      align-items: center;
-    }
+/* table layout */
+.availability-table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-    .date-box {
-      background: #e6f4ff;
-      padding: 10px;
-      text-align: center;
-      border: 2px solid #333;
-      font-weight: bold;
-    }
+.availability-table td {
+    padding: 10px;
+    vertical-align: middle;
+}
 
-    .slot {
-      padding: 10px;
-      text-align: center;
-      border-radius: 6px;
-      border: 2px solid;
-      cursor: pointer;
-      font-weight: bold;
-    }
+/* date box */
+.date-box {
+    background: #e8f4ff;
+    padding: 10px;
+    border: 2px solid #333;
+    width: 130px;
+    text-align: center;
+}
 
-    /* Slot states */
-    .available {
-      border-color: green;
-      color: green;
-      background: #eaffea;
-    }
+/* slot styles */
+.slot {
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid;
+    user-select: none;
+}
 
-    .unavailable {
-      border-color: red;
-      color: red;
-      background: #ffeaea;
-      cursor: not-allowed;
-    }
+.available {
+    border-color: green;
+    color: green;
+}
 
-    .selected {
-      border-color: #007bff;
-      color: #007bff;
-      background: #e6f0ff;
-    }
+.unavailable {
+    border-color: red;
+    color: red;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
 
-    .book-btn {
-      margin-top: 30px;
-      float: right;
-      padding: 10px 25px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 2px solid green;
-      background: #eaffea;
-      color: green;
-      cursor: pointer;
-    }
+.selected {
+    background-color: #e6f0ff;
+    border-color: #1a73e8;
+    color: #1a73e8;
+    font-weight: bold;
+}
 
-    .book-btn:hover {
-      background: #d4ffd4;
-    }
-  </style>
+/* book button */
+.book-btn {
+    margin-top: 20px;
+    padding: 10px 25px;
+    border-radius: 8px;
+    border: 2px solid green;
+    background: white;
+    color: green;
+    font-size: 16px;
+    cursor: pointer;
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
-  <h2>Doctor's Availability</h2>
-  <span><a href="{{ url_for('patient_dashboard')}}"><BUTTON>Back</BUTTON></a>
- 
-</span>
+<h2>Doctor's Availability</h2>
 
-  <!-- Day 1 -->
-  <div class="row">
-    <div class="date-box">21/01/2025</div>
-    <div class="slot available">08:00 - 12:00 am</div>
-    <div class="slot unavailable">04:00 - 09:00 pm</div>
-  </div>
+<form method="POST" id="bookingForm">
+<input type="hidden" name="slot_id" id="selectedSlot">
 
-  <!-- Day 2 -->
-  <div class="row">
-    <div class="date-box">22/01/2025</div>
-    <div class="slot unavailable">08:00 - 12:00 am</div>
-    <div class="slot available">04:00 - 09:00 pm</div>
-  </div>
+<table class="availability-table">
+{% for date, slots in grouped_slots.items() %}
+<tr>
+    <td>
+        <div class="date-box">
+            {{ date.strftime('%d/%m/%Y') }}
+        </div>
+    </td>
 
-  <!-- Day 3 -->
-  <div class="row">
-    <div class="date-box">23/01/2025</div>
-    <div class="slot available">08:00 - 12:00 am</div>
-    <div class="slot unavailable">04:00 - 09:00 pm</div>
-  </div>
+    {% for slot in slots %}
+    <td>
+        <div class="slot
+             {% if slot.is_available %}available{% else %}unavailable{% endif %}"
+             {% if slot.is_available %}
+             onclick="selectSlot(this, '{{ slot.id }}')"
+             {% endif %}>
+            {{ slot.start_time.strftime('%H:%M') }} - {{ slot.end_time.strftime('%H:%M') }}
+        </div>
+    </td>
+    {% endfor %}
+</tr>
+{% endfor %}
+</table>
 
-  <!-- Day 4 (Selected slot) -->
-  <div class="row">
-    <div class="date-box">24/01/2025</div>
-    <div class="slot unavailable">08:00 - 12:00 am</div>
-    <div class="slot selected">04:00 - 09:00 pm</div>
-  </div>
-
-  <!-- Day 5 -->
-  <div class="row">
-    <div class="date-box">25/01/2025</div>
-    <div class="slot available">08:00 - 12:00 am</div>
-    <div class="slot unavailable">04:00 - 09:00 pm</div>
-  </div>
-
-  <!-- Day 6 -->
-  <div class="row">
-    <div class="date-box">26/01/2025</div>
-    <div class="slot unavailable">08:00 - 12:00 am</div>
-    <div class="slot available">04:00 - 09:00 pm</div>
-  </div>
-
-  <!-- Day 7 -->
-  <div class="row">
-    <div class="date-box">27/01/2025</div>
-    <div class="slot available">08:00 - 12:00 am</div>
-    <div class="slot unavailable">04:00 - 09:00 pm</div>
-  </div>
-   
-  <button class="book-btn">Book</button> 
+<button class="book-btn" type="submit">Book</button>
+</form>
 </div>
- 
+
+<script>
+let selected = null;
+
+function selectSlot(element, slotId) {
+    if (selected) {
+        selected.classList.remove("selected");
+    }
+    element.classList.add("selected");
+    selected = element;
+    document.getElementById("selectedSlot").value = slotId;
+}
+</script>
+
 </body>
 </html>

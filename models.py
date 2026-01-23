@@ -42,6 +42,8 @@ class Appointment(db.Model):
 
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), nullable=False)  
+    
+    availability_id = db.Column(db.Integer,db.ForeignKey('doctor_availability.id'),nullable=False)
 
     treatments = db.relationship('Treatment', backref='appointment', lazy=True)
 
@@ -69,3 +71,4 @@ class DoctorAvailability(db.Model, UserMixin):
     end_time = db.Column(db.Time, nullable=False)
     is_available = db.Column(db.Boolean, default=True)
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)
+    appointment = db.relationship('Appointment',backref='doctor_availability',lazy=True)

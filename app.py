@@ -316,11 +316,76 @@ def view_details(doctor_id):
     doctor = Doctor.query.get_or_404(doctor_id)
    
     return render_template('./patient/view_details.html', doctor=doctor)
-    
-@app.route('/patient/check_availabity')
+'''   
+@app.route('/patient/check_availabity/<int:doctor_id>')
 @login_required
-def check_availabity():
-    return render_template('./patient/check_availabity.html')
+def check_availabity(doctor_id):
+    doctor = Doctor.query.get_or_404(doctor_id)
+    return render_template('./patient/check_availabity.html', doctor = doctor)
+'''
+@app.route('/patient/check_availabity/<int:doctor_id>', methods=['GET', 'POST'])
+@login_required
+def check_availabity(doctor_id):
+    doctor = Doctor.query.get_or_404(doctor_id)
+    if request.method == 'POST':
+        slot_id = request.form.get('slot_id')
+
+        if not slot_id:
+            flash("Please select a slot")
+            return redirect(request.url)
+
+        slot = DoctorAvailability.query.get_or_404(slot_id)
+
+        if not slot.is_available:
+            flash("Slot already booked")
+            return redirect(request.url)
+
+        appointment = Appointment(
+            doctor_id=doctor_id,
+            patient_id=current_user.id,
+            availability_id=slot.id
+        )
+
+        slot.is_available = False
+
+        db.session.add(appointment)
+        db.session.commit()
+
+        flash("Appointment booked successfully")
+        return redirect(url_for('patient_dashboard'))
+
+    slots = DoctorAvailability.query.filter_by(
+        doctor_id=doctor_id
+    ).order_by(DoctorAvailability.date).all()
+
+    # group slots by date
+    grouped_slots = {}
+    for slot in slots:
+        grouped_slots.setdefault(slot.date, []).append(slot)
+
+    return render_template('./patient/check_availabity.html',grouped_slots=grouped_slots,doctor=doctor)
+
+@app.route('/patient/cancel_appointment/<int:appointment_id>',methods=['POST'])
+@login_required
+def cancel_appointment(appointment_id):
+
+    appointment = Appointment.query.get_or_404(appointment_id)
+     
+    #  Security check
+    if appointment.patient_id != current_user.id:
+        flash("Unauthorized action")
+        return redirect(url_for('patient_dashboard'))
+ 
+    #  Make slot available again
+    appointment.doctor_availability.is_available = True
+
+    #  Remove appointment
+    db.session.delete(appointment)
+    db.session.commit()
+
+    flash("Appointment cancelled successfully")
+    return redirect(url_for('patient_dashboard') )
+
 
 ## DOCTOR ROUTE
 @app.route('/doctor/doctor_logout')

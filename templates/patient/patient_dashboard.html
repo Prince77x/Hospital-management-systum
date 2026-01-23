@@ -185,9 +185,10 @@
           <p>No departments available</p>
           {% endfor %}
         </div>
-      </div> 
+      </div>
 
       <!-- Upcoming Appointments -->
+
       <div class="section">
         <h3>Upcoming Appointments</h3>
 
@@ -208,13 +209,22 @@
             <tr>
               <td>{{ loop.index }}</td>
               <td>{{ appt.doctor.doc_name }}</td>
-              <td>{{ appt.doctor.department.name }}</td>
+              <td>{{ appt.doctor.department.dept_name }}</td>
               <td>{{ appt.date.strftime('%d/%m/%Y') }}</td>
               <td>08:00 – 12:00</td>
               <td>
-                <a href="#">
+                <!--<form> 
+                <a href="{{ url_for('cancel_appointment',appointment_id = appt.id)}}">
                   <button class="btn-cancel">Cancel</button>
                 </a>
+                </form>-->
+                <form
+                  method="POST"
+                  action="{{ url_for('cancel_appointment', appointment_id=appt.id) }}"
+                  style="display: inline"
+                >
+                  <button type="submit" class="btn-cancel">Cancel</button>
+                </form>
               </td>
             </tr>
             {% else %}
