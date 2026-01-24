@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../static/css/index.css">
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Navigation (unchanged) -->
     <nav class="navbar">
         <div class="logo">
             <i class="fas fa-hospital"></i> HMS Portal
@@ -37,26 +37,236 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section (expanded) -->
     <section class="hero">
-        <div class="hero-content">
-            <h1>Advanced Hospital Management</h1>
-            <p>
-                Securely book appointments, manage doctors, track treatments, 
-                and access medical records—all from one trusted platform.
-            </p>
-            <div class="cta-buttons">
-                <a href="{{ url_for('patient_login') }}" class="cta-primary">
-                    <i class="fas fa-calendar-check"></i> Book Appointment
-                </a>
-                <a href="#features" class="cta-secondary">
-                    <i class="fas fa-play"></i> Learn More
-                </a>
+        <div class="hero-inner">
+            <div class="hero-content">
+                <div class="hero-highlight">
+                    <i class="fas fa-bolt"></i>
+                    Smart, secure and fully online hospital experience
+                </div>
+                <h1>Advanced Hospital Management for Modern Healthcare</h1>
+                <p>
+                    Pro Hospital brings appointments, medical records, billing, and doctor coordination into a single secure platform, 
+                    so patients, doctors, and admins can focus on care instead of paperwork.
+                </p>
+                <div class="cta-buttons">
+                    <a href="{{ url_for('patient_login') }}" class="cta-primary">
+                        <i class="fas fa-calendar-check"></i> Book Appointment
+                    </a>
+                    <a href="#features" class="cta-secondary">
+                        <i class="fas fa-circle-play"></i> Explore Features
+                    </a>
+                </div>
+                <div class="hero-mini-stats">
+                    <div>
+                        <span>24/7</span>
+                        <span>Online booking and self‑service</span>
+                    </div>
+                    <div>
+                        <span>Real‑time</span>
+                        <span>Doctor availability and schedules</span>
+                    </div>
+                    <div>
+                        <span>Single portal</span>
+                        <span>For patients, doctors and admins</span>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="hero-sidecard">
+                <h3><i class="fas fa-check-circle"></i> Why patients love online booking</h3>
+                <ul class="hero-sidecard-list">
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        <span>Book or reschedule appointments anytime, even after hospital working hours.</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-bell"></i>
+                        <span>Get automatic reminders so you never miss a visit or follow‑up.</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-table-list"></i>
+                        <span>See all your upcoming and past visits in one place with clear status.</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-shield-heart"></i>
+                        <span>Access your care safely with secure logins and protected health data.</span>
+                    </li>
+                </ul>
+            </aside>
+        </div>
+    </section>
+
+    <!-- Section: Benefits of Online Appointment Booking -->
+    <section class="section" id="online-booking">
+        <div class="section-inner">
+            <div class="section-header">
+                <h2 class="section-title">Benefits of Online Appointment Booking</h2>
+                <p class="section-subtitle">
+                    Make it easier for patients to reach the right doctor at the right time, while reducing the workload on the front desk.
+                </p>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>24/7 Accessibility</h3>
+                    <p>
+                        Patients can book, reschedule, or cancel appointments anytime from their phone or laptop, 
+                        without waiting in call queues or visiting the hospital reception.
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon" style="background:rgba(16,185,129,0.08);color:#059669;">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <h3>Reduced Waiting Time</h3>
+                    <p>
+                        Real‑time time‑slot selection and clear appointment confirmation help reduce crowding, 
+                        waiting room time, and confusion at the hospital.
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon" style="background:rgba(245,158,11,0.08);color:#d97706;">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Automatic Reminders</h3>
+                    <p>
+                        SMS or email reminders for upcoming visits lower missed appointments and improve continuity of care, 
+                        which is critical for follow‑ups and chronic patients.
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon" style="background:rgba(99,102,241,0.08);color:#4f46e5;">
+                        <i class="fas fa-users-gear"></i>
+                    </div>
+                    <h3>Less Work for Staff</h3>
+                    <p>
+                        Front‑desk staff spend less time answering booking calls and adjusting schedules, 
+                        and more time helping patients who are onsite and need personal assistance.
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon" style="background:rgba(239,68,68,0.08);color:#dc2626;">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <h3>Fewer Double‑Bookings</h3>
+                    <p>
+                        Online booking relies on a central calendar to show only free slots, 
+                        helping to avoid overlapping appointments and manual entry mistakes.
+                    </p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon" style="background:rgba(59,130,246,0.08);color:#2563eb;">
+                        <i class="fas fa-laptop-medical"></i>
+                    </div>
+                    <h3>Better Patient Experience</h3>
+                    <p>
+                        A clean, self‑service booking flow gives patients transparency and control, 
+                        which improves satisfaction and makes them more likely to return to the same hospital.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Section: Hospital Management Features Overview -->
+    <section class="section alt" id="features">
+        <div class="section-inner">
+            <div class="section-header">
+                <h2 class="section-title">What You Can Do with Pro Hospital HMS</h2>
+                <p class="section-subtitle">
+                    A secure, role‑based platform built for patients, doctors, and administrators to work together smoothly.
+                </p>
+            </div>
+
+            <div class="features-layout">
+                <div>
+                    <ul class="features-list">
+                        <li>
+                            <i class="fas fa-id-card-clip"></i>
+                            <div>
+                                <strong>Centralized patient profiles</strong>
+                                <span>
+                                    Store basic details, contact information, medical history, allergies, and past visits in one place, 
+                                    so every doctor sees the same up‑to‑date record.
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-calendar-days"></i>
+                            <div>
+                                <strong>Doctor schedules and slots</strong>
+                                <span>
+                                    Manage OPD timings, breaks, and specialization‑wise slots for each doctor, 
+                                    and instantly reflect changes on the patient booking portal.
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-notes-medical"></i>
+                            <div>
+                                <strong>Treatment and visit history</strong>
+                                <span>
+                                    Track diagnoses, prescriptions, investigations, and follow‑up plans for each visit, 
+                                    helping doctors review past care quickly before every appointment.
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <div>
+                                <strong>Smart billing and payments</strong>
+                                <span>
+                                    Link consultations, tests, and procedures to bills, and optionally provide online payment and 
+                                    digital receipts to patients through the same portal.
+                                </span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-lock"></i>
+                            <div>
+                                <strong>Role‑based secure access</strong>
+                                <span>
+                                    Separate logins for admins, doctors, and patients ensure that each user only sees 
+                                    the information and actions relevant to their role.
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                    <p class="features-note">
+                        You can easily extend this system with modules for lab reports, pharmacy, ward management, or tele‑consultation as your hospital grows.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 style="font-size:1.1rem;margin-bottom:0.8rem;">Designed for different users</h3>
+                    <p style="font-size:0.95rem;color:#4b5563;">
+                        The portal is built to work smoothly across three key roles:
+                    </p>
+                    <div class="pill-row">
+                        <span class="pill"><i class="fas fa-user-injured"></i> Patient self‑service</span>
+                        <span class="pill"><i class="fas fa-user-md"></i> Doctor workspace</span>
+                        <span class="pill"><i class="fas fa-shield-alt"></i> Admin control panel</span>
+                    </div>
+                    <p style="margin-top:1.3rem;font-size:0.95rem;color:#4b5563;">
+                        Patients focus on booking and tracking care, doctors focus on clinical details and schedules, 
+                        and admins get tools for configuration, reporting, and day‑to‑day operations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (unchanged) -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
