@@ -53,7 +53,7 @@ class Treatment(db.Model):
     treatment_name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200),nullable=False)
 
-    appointment_id = db.Column(db.Integer, db.ForeignKey('appointment.id'), nullable=False)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointment.id'), nullable=True)
 
 
 # Admin model

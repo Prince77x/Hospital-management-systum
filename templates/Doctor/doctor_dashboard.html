@@ -1,213 +1,478 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Doctor Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - Pro Hospital</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: #f8fafc;
+        }
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 0;
-    }
+        /* ===== Header (Smaller Height + Side-by-side) ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 70px;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem; /* Perfect side-by-side spacing */
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .user-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16,185,129,0.4);
+        }
+        .logout-btn {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.3);
+        }
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,107,53,0.4);
+        }
 
-    h2 {
-      text-align: center;
-      margin-top: 20px;
-    }
+        /* ===== Main Content ===== */
+        .main-content {
+            padding-top: 80px;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-    .dashboard {
-      width: 85%;
-      max-width: 1100px;
-      margin: 30px auto;
-      background: #fff;
-      border: 1px solid #ccc;
-      padding-bottom: 20px;
-    }
+        /* ===== Page Hero ===== */
+        .page-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+        .page-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
 
-    /* Header */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      padding: 15px 20px;
-      border-bottom: 1px solid #ccc;
-      font-size: 16px;
-    }
+        /* ===== Dashboard Container ===== */
+        .dashboard {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .dashboard-header {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .welcome-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
 
-    .header a {
-      text-decoration: none;
-      color: #007bff;
-    }
+        /* ===== Cards ===== */
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    /* Section */
-    .section {
-      padding: 20px;
-    }
+        /* ===== Buttons ===== */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn-primary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; }
+        .btn-success { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+        .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .btn-secondary { 
+            background: linear-gradient(135deg, #6b7280, #4b5563); 
+            color: white; 
+        }
+        .btn-availability {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
 
-    .section h3 {
-      margin-top: 0;
-      margin-bottom: 15px;
-    }
+        /* ===== Table ===== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 1rem;
+        }
+        th {
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            color: white;
+            padding: 1.25rem 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        tr:hover {
+            background: #f8fafc;
+        }
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
 
-    /* Table */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
+        /* ===== Patient List ===== */
+        .patient-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .patient-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+        }
+        .patient-row:hover {
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .patient-name {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1.1rem;
+        }
 
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: center;
-    }
+        /* ===== Availability Section ===== */
+        .availability-section {
+            text-align: right;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 20px;
+            margin-top: 2rem;
+        }
 
-    th {
-      background: #f2f2f2;
-    }
+        /* ===== Empty States ===== */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #6b7280;
+        }
+        .empty-state i {
+            font-size: 4rem;
+            color: #d1d5db;
+            margin-bottom: 1rem;
+        }
 
-    /* Buttons */
-    .btn {
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-    }
+        /* ===== Footer ===== */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 4rem 5% 2rem;
+            margin-top: 4rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h3 {
+            color: #2c5aa0;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.2s;
+        }
+        .footer-section a:hover { color: white; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
 
-    .btn-update {
-      background: #e7f1ff;
-      color: #007bff;
-      border: 1px solid #007bff;
-    }
-
-    .btn-complete {
-      background: #e6f8ec;
-      color: #28a745;
-      border: 1px solid #28a745;
-    }
-
-    .btn-cancel {
-      background: #fff;
-      color: red;
-      border: 2px solid red;
-    }
-
-    .btn-view {
-      background: #e7f1ff;
-      color: #007bff;
-      border: 1px solid #007bff;
-    }
-
-    /* Assigned Patients */
-    .patient-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid #ccc;
-      padding: 10px 15px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-    }
-
-    /* Availability Button */
-    .availability {
-      text-align: right;
-      padding: 0 20px;
-    }
-
-    .btn-availability {
-      background: #e6f8ec;
-      color: #28a745;
-      border: 2px solid #28a745;
-      padding: 8px 16px;
-      border-radius: 8px;
-    }
-  </style>
+        @media (max-width: 768px) {
+            .navbar { padding: 0.5rem 4%; }
+            .main-content { padding: 2rem 1rem; padding-top: 75px; }
+            .nav-actions { flex-direction: column; gap: 0.25rem; }
+            .actions { flex-direction: column; }
+            .patient-row { flex-direction: column; text-align: center; gap: 1rem; }
+        }
+    </style>
 </head>
-
 <body>
+    <!-- Navigation (Doctor name + logout SIDE-BY-SIDE) -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i> HMS Portal
+        </div>
+        <div class="nav-actions">
+            <a href="#" class="user-profile">
+                <i class="fas fa-user-md"></i>
+                Dr. {{ current_user.doc_name }}
+            </a>
+            <a href="{{ url_for('doctor_logout') }}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </nav>
 
-<h2>Doctors' Dashboard</h2>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <h1><i class="fas fa-stethoscope"></i> Doctor Dashboard</h1>
+            <p>Manage your appointments, patients and availability</p>
+        </section>
 
-<div class="dashboard">
+        <!-- Dashboard -->
+        <div class="dashboard">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div class="welcome-text">
+                    <i class="fas fa-user-md"></i> Welcome Dr. {{ current_user.doc_name }}
+                </div>
+            </div>
 
-  <!-- Header -->
-  <div class="header">
-    <div>Welcome Dr. {{ current_user.doc_name }}</div>
-    <div>
-      <a href="{{ url_for('doctor_logout')}}">Logout</a>
+            <!-- Upcoming Appointments -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-calendar-check"></i> Upcoming Appointments
+                    </h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-hashtag"></i> Sr No.</th>
+                                <th><i class="fas fa-user-injured"></i> Patient Name</th>
+                                <th><i class="fas fa-file-medical"></i> Patient History</th>
+                                <th><i class="fas fa-cogs"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appt in appointments %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ appt.patient.pat_name }}</td>
+                                <td>
+                                    <a href="{{ url_for('update_patient', appointment_id=appt.id) }}">
+                                        <button class="btn btn-primary">
+                                            <i class="fas fa-edit"></i> Update
+                                        </button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="actions">
+                                        <button class="btn btn-success">
+                                            <i class="fas fa-check"></i> Complete
+                                        </button>
+                                        <button class="btn btn-danger">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="empty-state">
+                                    <i class="fas fa-calendar-times"></i>
+                                    <div>No upcoming appointments</div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Assigned Patients -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-users"></i> Assigned Patients
+                    </h2>
+                </div>
+                <div class="patient-list">
+                    {% for patient in assigned_patients %}
+                    <div class="patient-row">
+                        <div class="patient-name">
+                            <i class="fas fa-user-injured"></i> {{ patient.pat_name }}
+                        </div>
+                        <a href="#">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-users-slash"></i>
+                        <div>No assigned patients</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Availability -->
+            <div class="availability-section">
+                <a href="{{ url_for('doctor_availability') }}">
+                    <button class="btn btn-availability">
+                        <i class="fas fa-calendar-plus"></i> Provide Availability
+                    </button>
+                </a>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Upcoming Appointments -->
-  <div class="section">
-    <h3>Upcoming Appointments</h3>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Sr No.</th>
-          <th>Patient Name</th>
-          <th>Patient History</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {% for appt in appointments %}
-        <tr>
-          <td>{{ loop.index }}</td>
-          <td>{{ appt.patient.pat_name }}</td>
-          <td>
-            <a href="{{ url_for('update_patient',appointment_id = appt.id)}}">
-              <button class="btn btn-update">Update</button>
-            </a>
-          </td>
-          <td>
-            <a href=" ">
-              <button class="btn btn-complete">Mark as Complete</button>
-            </a>
-            <a href=" ">
-              <button class="btn btn-cancel">Cancel</button>
-            </a>
-          </td>
-        </tr>
-        {% else %}
-        <tr>
-          <td colspan="4">No upcoming appointments</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Assigned Patients -->
-  <div class="section">
-    <h3>Assigned Patients</h3>
-
-    {% for patient in assigned_patients %}
-    <div class="patient-row">
-      <span>{{ patient.pat_name }}</span>
-      <a href=" ">
-        <button class="btn btn-view">View</button>
-      </a>
-    </div>
-    {% else %}
-      <p>No assigned patients</p>
-    {% endfor %}
-  </div>
-
-  <!-- Availability -->
-  <div class="availability">
-    <a href="{{ url_for('doctor_availability')}}">
-      <button class="btn btn-availability">Provide Availability</button>
-    </a>
-  </div>
-
-</div>
-
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-hospital"></i> Pro Hospital</h3>
+                <p>Advanced healthcare management for modern hospitals.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="/patient/login">Patient Portal</a>
+                <a href="/doctor/login">Doctor Portal</a>
+                <a href="/admin/login">Admin Portal</a>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <a href="#">Appointment Management</a>
+                <a href="#">Patient Records</a>
+                <a href="#">Doctor Schedules</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                <p><i class="fas fa-envelope"></i> info@prohospital.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Delhi, India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Pro Hospital Management System. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>

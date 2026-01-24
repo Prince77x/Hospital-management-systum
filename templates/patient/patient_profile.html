@@ -1,133 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Patient Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Profile - Pro Hospital</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: #f8fafc;
+        }
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 0;
-    }
+        /* ===== Header (Smaller Height) ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 70px;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .user-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59,130,246,0.4);
+        }
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+        .nav-link {
+            color: #1e40af;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            background: rgba(59,130,246,0.1);
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            background: rgba(59,130,246,0.2);
+            color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+        .logout-btn {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.3);
+        }
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,107,53,0.4);
+        }
 
-    .profile-container {
-      max-width: 500px;
-      margin: 60px auto;
-      background: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      padding: 30px;
-    }
+        /* ===== Main Content ===== */
+        .main-content {
+            padding-top: 80px;
+            min-height: calc(100vh - 200px);
+            padding: 2rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .profile-header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+        /* ===== Page Hero ===== */
+        .page-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            margin-top: 20px;
+        }
+        .page-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
 
-    .profile-header h2 {
-      margin: 0;
-      color: #333;
-    }
+        /* ===== Profile Card ===== */
+        .profile-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            padding: 3rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            box-shadow: 0 10px 40px rgba(59,130,246,0.3);
+        }
+        .profile-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .profile-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
 
-    .profile-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid #e0e0e0;
-    }
+        /* ===== Profile Info ===== */
+        .profile-info {
+            margin-bottom: 3rem;
+        }
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+        .profile-item:last-child {
+            border-bottom: none;
+        }
+        .profile-item:hover {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            transform: translateX(5px);
+        }
+        .profile-label {
+            font-weight: 600;
+            color: #64748b;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .profile-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+            text-align: right;
+        }
 
-    .profile-item:last-child {
-      border-bottom: none;
-    }
+        /* ===== Buttons ===== */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
 
-    .label {
-      font-weight: bold;
-      color: #555;
-    }
+        /* ===== Footer ===== */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 4rem 5% 2rem;
+            margin-top: 4rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h3 {
+            color: #2c5aa0;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.2s;
+        }
+        .footer-section a:hover { color: white; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
 
-    .value {
-      color: #333;
-    }
-
-    .actions {
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    .btn {
-      padding: 10px 18px;
-      font-size: 15px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .btn-edit {
-      background-color: #007bff;
-      color: white;
-    }
-
-    .btn-edit:hover {
-      background-color: #0056b3;
-    }
-
-    .btn-back {
-      display: inline-block;
-      margin-top: 15px;
-      color: #555;
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    .btn-back:hover {
-      text-decoration: underline;
-    }
-  </style>
+        @media (max-width: 768px) {
+            .navbar { padding: 0.5rem 4%; }
+            .main-content { padding: 2rem 1rem; padding-top: 75px; }
+            .profile-container { padding: 2rem 1.5rem; margin: 0 1rem; }
+            .nav-actions { flex-direction: column; gap: 0.25rem; }
+            .nav-links { flex-direction: column; gap: 0.25rem; }
+            .btn-group { flex-direction: column; width: 100%; }
+            .profile-item { flex-direction: column; text-align: center; gap: 0.5rem; }
+        }
+    </style>
 </head>
-
 <body>
+    <!-- Navigation (Smaller + Side-by-side) -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i> HMS Portal
+        </div>
+        <div class="nav-actions">
+            <a href="#" class="user-profile">
+                <i class="fas fa-user-injured"></i>
+                Patient Portal
+            </a>
+            <div class="nav-links">
+                <a href="{{ url_for('patient_dashboard') }}" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </div>
+            <a href="{{ url_for('patient_logout') }}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </nav>
 
-  <div class="profile-container" >
-    
-    <div class="profile-header">
-      <h2>Patient Profile</h2>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <h1><i class="fas fa-user-injured"></i> Patient Profile</h1>
+            <p>View and manage your personal information</p>
+        </section>
+
+        <!-- Profile Container -->
+        <div class="profile-container">
+            <!-- Avatar -->
+            <div class="profile-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+
+            <div class="profile-header">
+                <h1 class="profile-title">
+                    <i class="fas fa-id-card"></i> Profile Details
+                </h1>
+            </div>
+
+            <div class="profile-info">
+                <div class="profile-item">
+                    <span class="profile-label">
+                        <i class="fas fa-user"></i> Name
+                    </span>
+                    <span class="profile-value">{{ current_user.pat_name }}</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="profile-label">
+                        <i class="fas fa-birthday-cake"></i> Age
+                    </span>
+                    <span class="profile-value">{{ current_user.pat_age }}</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="profile-label">
+                        <i class="fas fa-phone"></i> Phone
+                    </span>
+                    <span class="profile-value">{{ current_user.pat_phone }}</span>
+                </div>
+
+                <div class="profile-item">
+                    <span class="profile-label">
+                        <i class="fas fa-envelope"></i> Email
+                    </span>
+                    <span class="profile-value">{{ current_user.pat_email }}</span>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <a href="{{ url_for('patient_edit', patient_id=current_user.id) }}">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                </a>
+                <a href="{{ url_for('patient_dashboard') }}">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </button>
+                </a>
+            </div>
+        </div>
     </div>
 
-    <div class="profile-item">
-      <span class="label">Name</span>
-      <span class="value">{{current_user.pat_name}}</span>
-    </div>
-
-    <div class="profile-item">
-      <span class="label">Age</span>
-      <span class="value">{{ current_user.pat_age }}</span>
-    </div>
-
-    <div class="profile-item">
-      <span class="label">Phone</span>
-      <span class="value">{{ current_user.pat_phone }}</span>
-    </div>
-
-    <div class="profile-item">
-      <span class="label">Email</span>
-      <span class="value">{{ current_user.pat_email }}</span>
-    </div>
-
-    <div class="actions">
-      <a href="{{url_for('patient_edit',patient_id=patient.id)}}">
-        <button class="btn btn-edit">Edit Profile</button>
-      </a>
-      <br />
-      <a href="{{ url_for('patient_dashboard')}}" class="btn-back">
-        ← Back to Dashboard
-      </a>
-    </div>
-
-  </div>
-
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-hospital"></i> Pro Hospital</h3>
+                <p>Advanced healthcare management for modern hospitals.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="{{ url_for('patient_dashboard') }}">Patient Dashboard</a>
+                <a href="/patient/login">Patient Portal</a>
+                <a href="/doctor/login">Doctor Portal</a>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <a href="#">Patient Profile</a>
+                <a href="#">Appointment Booking</a>
+                <a href="#">Medical Records</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                <p><i class="fas fa-envelope"></i> info@prohospital.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Delhi, India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Pro Hospital Management System. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>

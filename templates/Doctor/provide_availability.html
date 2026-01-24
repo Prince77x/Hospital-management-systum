@@ -1,109 +1,434 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Doctor Availability</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Availability - Pro Hospital</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: #f8fafc;
+        }
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
+        /* ===== Header (Smaller Height) ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 70px;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .user-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16,185,129,0.4);
+        }
+        .logout-btn {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.3);
+        }
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,107,53,0.4);
+        }
 
-    .availability-grid {
-      display: grid;
-      grid-template-columns: 150px 200px 200px;
-      gap: 15px;
-      align-items: center;
-    }
+        /* ===== Main Content ===== */
+        .main-content {
+            padding-top: 80px;
+            padding: 2rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .date-box {
-      background: #eaf6ff;
-      padding: 10px;
-      text-align: center;
-      border: 2px solid #333;
-      border-radius: 6px;
-      font-weight: bold;
-    }
+        /* ===== Page Hero ===== */
+        .page-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            margin-top: 20px;
+        }
+        .page-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
 
-    /* hide checkbox */
-    input[type="checkbox"] {
-      display: none;
-    }
+        /* ===== Availability Card ===== */
+        .availability-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+        .availability-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .availability-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
 
-    .slot-card {
-      border: 2px solid red;
-      padding: 12px;
-      text-align: center;
-      border-radius: 6px;
-      cursor: pointer;
-      user-select: none;
-      transition: 0.2s;
-    }
+        /* ===== Availability Grid ===== */
+        .availability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        .date-box {
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
 
-    /* available (saved) */
-    input:checked + .slot-card {
-      border-color: green;
-      color: green;
-    }
+        /* ===== Slot Cards ===== */
+        input[type="checkbox"] {
+            display: none;
+        }
+        .slot-wrapper {
+            position: relative;
+        }
+        .slot-card {
+            border: 3px solid #ef4444;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border-radius: 16px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fef2f2;
+            font-weight: 600;
+            color: #dc2626;
+            position: relative;
+            overflow: hidden;
+        }
+        .slot-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(239,68,68,0.1), rgba(220,38,38,0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .slot-card:hover::before {
+            opacity: 1;
+        }
 
-    /* selected but not saved yet */
-    .slot-card.selected {
-      border-color: #1e90ff;
-      color: #1e90ff;
-      background: #eef6ff;
-    }
+        /* Available (saved) */
+        input:checked + .slot-card {
+            border-color: #10b981;
+            color: #059669;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        }
 
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: none;
-      background: green;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-  </style>
+        /* Selected but not saved */
+        .slot-card.selected {
+            border-color: #3b82f6;
+            color: #1d4ed8;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            transform: scale(1.02);
+        }
+
+        .slot-time {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        .slot-range {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        /* ===== Save Button ===== */
+        .save-availability {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 1.25rem 3rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(16,185,129,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .save-availability:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(16,185,129,0.5);
+        }
+        .save-availability:active {
+            transform: translateY(-2px);
+        }
+
+        /* ===== Legend ===== */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #e2e8f0;
+        }
+        .legend-available .legend-color { background: #d1fae5; border-color: #10b981; }
+        .legend-selected .legend-color { background: #eff6ff; border-color: #3b82f6; }
+        .legend-unavailable .legend-color { background: #fef2f2; border-color: #ef4444; }
+
+        /* ===== Footer ===== */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 4rem 5% 2rem;
+            margin-top: 4rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h3 {
+            color: #2c5aa0;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.2s;
+        }
+        .footer-section a:hover { color: white; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 0.5rem 4%; }
+            .main-content { padding: 2rem 1rem; padding-top: 75px; }
+            .availability-grid { 
+                grid-template-columns: 1fr; 
+                gap: 1rem; 
+            }
+            .date-box { order: -1; }
+            .nav-actions { flex-direction: column; gap: 0.25rem; }
+            .legend { gap: 1rem; }
+        }
+    </style>
 </head>
-
 <body>
-
-<h2>Doctor's Availability</h2>
-
-<form method="POST">
-  <div class="availability-grid">
-
-    {% for slot in slots %}
-      <!-- Date -->
-      <div class="date-box">
-        {{ slot.date.strftime('%d/%m/%Y') }}
-      </div>
-
-      <!-- Morning Slot -->
-      <label>
-        <input type="checkbox"
-               name="slots"
-               value="{{ slot.id }}"
-               {% if slot.is_available %}checked{% endif %}>
-        <div class="slot-card">
-          {{ slot.start_time.strftime('%H:%M') }} -
-          {{ slot.end_time.strftime('%H:%M') }}
+    <!-- Navigation (Smaller + Side-by-side) -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i> HMS Portal
         </div>
-      </label>
-    {% endfor %}
+        <div class="nav-actions">
+            <a href="{{ url_for('doctor_dashboard') }}" class="user-profile">
+                <i class="fas fa-user-md"></i>
+                Doctor Panel
+            </a>
+            <a href="{{ url_for('doctor_logout') }}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </nav>
 
-  </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <h1><i class="fas fa-calendar-alt"></i> Set Availability</h1>
+            <p>Choose your available time slots for patient appointments</p>
+        </section>
 
-  <button type="submit">Save Availability</button>
-</form>
+        <!-- Availability Form -->
+        <div class="availability-card">
+            <div class="availability-header">
+                <h1 class="availability-title">
+                    <i class="fas fa-clock"></i> Your Schedule
+                </h1>
+            </div>
 
-<script>
-  document.querySelectorAll('.slot-card').forEach(card => {
-    card.addEventListener('click', () => {
-      card.classList.toggle('selected');
-    });
-  });
-</script>
+            <form method="POST">
+                <div class="availability-grid">
+                    {% for slot in slots %}
+                        <!-- Date -->
+                        <div class="date-box">
+                            {{ slot.date.strftime('%d/%m/%Y') }}
+                        </div>
 
+                        <!-- Time Slot -->
+                        <div class="slot-wrapper">
+                            <label>
+                                <input type="checkbox"
+                                       name="slots"
+                                       value="{{ slot.id }}"
+                                       {% if slot.is_available %}checked{% endif %}>
+                                <div class="slot-card">
+                                    <div class="slot-time">
+                                        {{ slot.start_time.strftime('%H:%M') }}
+                                    </div>
+                                    <div class="slot-range">
+                                        {{ slot.end_time.strftime('%H:%M') }}
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="save-availability">
+                    <i class="fas fa-save"></i> Save Availability
+                </button>
+            </form>
+
+            <!-- Legend -->
+            <div class="legend">
+                <div class="legend-item legend-available">
+                    <div class="legend-color"></div>
+                    <span>Available</span>
+                </div>
+                <div class="legend-item legend-selected">
+                    <div class="legend-color"></div>
+                    <span>Selected</span>
+                </div>
+                <div class="legend-item legend-unavailable">
+                    <div class="legend-color"></div>
+                    <span>Not Available</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-hospital"></i> Pro Hospital</h3>
+                <p>Advanced healthcare management for modern hospitals.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="{{ url_for('doctor_dashboard') }}">Doctor Dashboard</a>
+                <a href="/patient/login">Patient Portal</a>
+                <a href="/admin/login">Admin Portal</a>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <a href="#">Availability Management</a>
+                <a href="#">Appointment Scheduling</a>
+                <a href="#">Patient Records</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                <p><i class="fas fa-envelope"></i> info@prohospital.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Delhi, India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Pro Hospital Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.slot-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('selected');
+            });
+        });
+    </script>
 </body>
 </html>

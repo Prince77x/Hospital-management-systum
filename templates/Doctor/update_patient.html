@@ -2,240 +2,406 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update Patient History</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Patient History - Pro Hospital</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: #f8fafc;
         }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            padding: 20px;
+
+        /* ===== Header (Smaller Height) ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 70px;
         }
-        
-        .form-wrapper {
-            max-width: 900px;
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .user-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16,185,129,0.4);
+        }
+        .logout-btn {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.3);
+        }
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,107,53,0.4);
+        }
+
+        /* ===== Main Content ===== */
+        .main-content {
+            padding-top: 80px;
+            min-height: calc(100vh - 200px);
+            padding: 2rem 5%;
+            max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-            border: 1px solid #e0e6ed;
         }
-        
-        .header {
+
+        /* ===== Page Hero ===== */
+        .page-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            margin-top: 20px;
+        }
+        .page-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== Form Wrapper ===== */
+        .form-wrapper {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .form-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 25px 30px;
-            position: relative;
+            padding: 2rem 2.5rem;
         }
-        
-        .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        
         .header-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 1.5rem;
         }
-        
         .info-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.75rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
         }
-        
         .info-label {
             font-weight: 600;
-            font-size: 14px;
+            font-size: 0.95rem;
+            opacity: 0.9;
         }
-        
         .dept-select {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.9);
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
-            padding: 8px 15px;
-            color: white;
-            font-size: 14px;
-            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            color: #1e293b;
+            font-weight: 500;
         }
-        
-        .dept-select option {
-            background: #667eea;
-            color: white;
-            padding: 10px;
-        }
-        
+
+        /* ===== Form Body ===== */
         .form-body {
-            padding: 40px 30px;
+            padding: 3rem 2.5rem 2rem;
         }
-        
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
         }
-        
         .form-group.full-width {
             grid-column: 1 / -1;
         }
-        
         .form-group {
             position: relative;
         }
-        
         .form-label {
             display: block;
             font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 8px;
-            font-size: 14px;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        
         .form-input, .form-textarea {
             width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e1e5e9;
-            border-radius: 12px;
-            font-size: 15px;
+            padding: 1.25rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 1rem;
             transition: all 0.3s ease;
-            background: #fafbfc;
+            background: #f8fafc;
+            font-family: inherit;
         }
-        
         .form-input:focus, .form-textarea:focus {
             outline: none;
             border-color: #667eea;
             background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
             transform: translateY(-1px);
         }
-        
         .form-textarea {
             resize: vertical;
-            min-height: 120px;
-            font-family: inherit;
+            min-height: 140px;
         }
-        
+
+        /* ===== Prescription Section ===== */
         .prescription-section {
-            background: #f8f9ff;
-            border: 2px solid #dee2e6;
-            border-radius: 12px;
-            padding: 25px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid #bae6fd;
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
         }
-        
-        .instruction {
-            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 30px;
-            border-left: 5px solid #fdcb6e;
-            font-style: italic;
-            color: #2d3436;
-        }
-        
+
+        /* ===== Save Button ===== */
         .save-button {
             background: linear-gradient(135deg, #00b894, #00cec9);
             color: white;
             border: none;
-            padding: 18px 50px;
+            padding: 1.25rem 3rem;
             border-radius: 50px;
-            font-size: 18px;
+            font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
             display: block;
-            margin: 40px auto 0;
+            margin: 3rem auto 0;
             transition: all 0.4s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow: 0 10px 30px rgba(0, 184, 148, 0.3);
+            box-shadow: 0 10px 30px rgba(0,184,148,0.4);
+            width: 280px;
         }
-        
         .save-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(0, 184, 148, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,184,148,0.5);
         }
-        
-        .save-button:active {
-            transform: translateY(-1px);
+
+        /* ===== Footer ===== */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 4rem 5% 2rem;
+            margin-top: 4rem;
         }
-        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h3 {
+            color: #2c5aa0;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.2s;
+        }
+        .footer-section a:hover { color: white; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
         @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .header-info {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+            .navbar { padding: 0.5rem 4%; }
+            .main-content { padding: 2rem 1rem; padding-top: 75px; }
+            .form-row { grid-template-columns: 1fr; gap: 1.5rem; }
+            .header-info { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .nav-actions { flex-direction: column; gap: 0.25rem; }
+            .save-button { width: 100%; max-width: 350px; }
         }
     </style>
 </head>
 <body>
-    <div class="form-wrapper">
-        <div class="header">
-            <div class="header-info">
-                <div class="info-item">
-                    <span class="info-label">Patient:</span>
-                    <strong>{{patient.pat_name}}</strong>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Department:</span>
-                    <select class="dept-select">
-                        <option selected>Cardiology</option>
-                        <option>Medicine</option>
-                        <option>Neurology</option>
-                        <option>Orthopedics</option>
-                        <option>Pediatrics</option>
-                    </select>
-                </div>
-            </div>
+    <!-- Navigation (Smaller + Side-by-side) -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i> HMS Portal
         </div>
-        <form method="POST">
-        <div class="form-body">
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Visit Type</label>
-                    <input type="text" class="form-input" placeholder="e.g., Follow-up, Emergency, Routine checkup">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Test Done</label>
-                    <input type="text" class="form-input" placeholder="e.g., ECG, Blood Test, X-Ray">
+        <div class="nav-actions">
+            <a href="{{ url_for('doctor_dashboard') }}" class="user-profile">
+                <i class="fas fa-user-md"></i>
+                Doctor Panel
+            </a>
+            <a href="{{ url_for('doctor_logout') }}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <h1><i class="fas fa-file-medical"></i> Update Patient History</h1>
+            <p>Record diagnosis, prescription and treatment details</p>
+        </section>
+
+        <!-- Patient History Form -->
+        <div class="form-wrapper">
+            <div class="form-header">
+                <div class="header-info">
+                    <div class="info-item">
+                        <i class="fas fa-user-injured" style="font-size: 1.2rem;"></i>
+                        <span class="info-label">Patient:</span>
+                        <strong>{{ patient.pat_name }}</strong>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-building"></i>
+                        <span class="info-label">Department:</span>
+                        <select class="dept-select">
+                            <option selected>Cardiology</option>
+                            <option>Medicine</option>
+                            <option>Neurology</option>
+                            <option>Orthopedics</option>
+                            <option>Pediatrics</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <label class="form-label">Diagnosis</label>
-                    <textarea class="form-textarea" placeholder="Enter detailed diagnosis..."></textarea>
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <label class="form-label">Prescription</label>
-                    <textarea class="form-textarea" placeholder="Medicine 1 (1-0-1)
+
+            <form method="POST">
+                <div class="form-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-calendar-day"></i> Visit Type
+                            </label>
+                            <input type="text" class="form-input" placeholder="e.g., Follow-up, Emergency, Routine checkup">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-flask"></i> Test Done
+                            </label>
+                            <input type="text" class="form-input" placeholder="e.g., ECG, Blood Test, X-Ray">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label class="form-label">
+                                <i class="fas fa-notes-medical"></i> Diagnosis
+                            </label>
+                            <textarea class="form-textarea" placeholder="Enter detailed diagnosis..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group full-width prescription-section">
+                            <label class="form-label">
+                                <i class="fas fa-prescription-bottle-alt"></i> Prescription
+                            </label>
+                            <textarea class="form-textarea" placeholder="Medicine 1 (1-0-1)
 Medicine 2 (0-1-0)
 Medicine 3 (1-0-1)
 Enter prescription details..."></textarea>
+                        </div>
+                    </div>
                 </div>
-            </div>
-           </form>
-            <button type="submit" class="save-button">
-                💾 Save History
-            </button>
+
+                <button type="submit" class="save-button">
+                    <i class="fas fa-save"></i> Save History
+                </button>
+            </form>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-hospital"></i> Pro Hospital</h3>
+                <p>Advanced healthcare management for modern hospitals.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="{{ url_for('doctor_dashboard') }}">Doctor Dashboard</a>
+                <a href="/patient/login">Patient Portal</a>
+                <a href="/admin/login">Admin Portal</a>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <a href="#">Patient History</a>
+                <a href="#">Prescription Management</a>
+                <a href="#">Appointment System</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                <p><i class="fas fa-envelope"></i> info@prohospital.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Delhi, India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Pro Hospital Management System. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>

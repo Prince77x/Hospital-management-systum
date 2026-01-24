@@ -1,156 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hospital Management System</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System - Pro Hospital</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f8;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* ===== Header ===== */
         .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 40px;
-            background: #ffffff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
         }
-
         .logo {
-            font-size: 22px;
-            font-weight: bold;
-            color: #2c3e50;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 1.5rem;
         }
-
-        /* ===== Login Dropdown ===== */
-        .login-wrapper {
-            position: relative;
-        }
-
+        .login-wrapper { position: relative; }
         .login-btn {
-            background-color: #ff6b2c;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
             color: white;
-            padding: 10px 18px;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 6px;
-            font-size: 15px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.3);
         }
-
         .login-btn:hover {
-            background-color: #e85c20;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,107,53,0.4);
         }
-
         .login-dropdown {
             position: absolute;
-            top: 35px;
+            top: 100%;
             right: 0;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-            width: 190px;
-            display: none;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
             overflow: hidden;
-            z-index: 1000;
+            margin-top: 0.5rem;
         }
-
-        .login-dropdown a {
-            display: block;
-            padding: 12px 16px;
-            text-decoration: none;
-            color: #333;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-
-        .login-dropdown a:hover {
-            background-color: #f5f5f5;
-        }
-
         .login-wrapper:hover .login-dropdown {
-            display: block;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
-
-        /* ===== Sign Up Button ===== */
+        .login-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            text-decoration: none;
+            color: #374151;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .login-dropdown a:last-child { border-bottom: none; }
+        .login-dropdown a:hover {
+            background: linear-gradient(90deg, #2c5aa0, #1e3a8a);
+            color: white;
+            padding-left: 1.5rem;
+        }
         .signup-btn {
             background: transparent;
-            border: 2px solid #3498db;
-            color: #3498db;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: bold;
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #2c5aa0, #1e3a8a) border-box;
+            color: #2c5aa0;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
             text-decoration: none;
-            transition: 0.3s;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(44,90,160,0.2);
         }
-
         .signup-btn:hover {
-            background: #3498db;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(44,90,160,0.4);
         }
 
-        /* ===== Hero Section ===== */
+        /* ===== Hero ===== */
         .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            padding: 80px 20px;
-            background: linear-gradient(120deg, #3498db, #2ecc71);
+            padding: 0 5%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1.5" fill="white" opacity="0.08"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; }
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+        .hero p {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .cta-primary, .cta-secondary {
+            padding: 1.25rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .cta-primary {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
             color: white;
         }
-
-        .hero h1 {
-            font-size: 36px;
-            margin-bottom: 15px;
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255,107,53,0.4);
+        }
+        .cta-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .cta-secondary:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
         }
 
-        .hero p {
-            font-size: 18px;
-            max-width: 600px;
-            margin: auto;
+        /* ===== Footer ===== */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h3 {
+            color: #2c5aa0;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.2s;
+        }
+        .footer-section a:hover { color: white; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem 4%; }
+            .nav-actions { gap: 1rem; }
+            .cta-buttons { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
-
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i> HMS Portal
+        </div>
+        <div class="nav-actions">
+            <div class="login-wrapper">
+                <button class="login-btn">
+                    <i class="fas fa-user"></i> Login
+                </button>
+                <div class="login-dropdown">
+                    <a href="{{ url_for('patient_login') }}">
+                        <i class="fas fa-user-injured"></i> Patient Login
+                    </a>
+                    <a href="{{ url_for('admin_login') }}">
+                        <i class="fas fa-shield-alt"></i> Admin Login
+                    </a>
+                    <a href="{{ url_for('doctor_login') }}">
+                        <i class="fas fa-user-md"></i> Doctor Login
+                    </a>
+                </div>
+            </div>
+            <a href="{{ url_for('register') }}" class="signup-btn">
+                <i class="fas fa-user-plus"></i> Sign Up
+            </a>
+        </div>
+    </nav>
 
-<!-- ===== Navigation Bar ===== -->
-<div class="navbar">
-    <div class="logo">🏥 HMS Portal</div>
-
-    <div class="nav-actions">
-        <div class="login-wrapper">
-            <button class="login-btn">Login ▼</button>
-
-            <div class="login-dropdown">
-                <a href="{{ url_for('patient_login') }}">🧑‍⚕️ Patient Login</a>
-                <a href="{{ url_for('admin_login') }}">🛡️ Admin Login</a>
-                <a href="{{ url_for('doctor_login') }}">👨‍⚕️ Doctor Login</a>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Advanced Hospital Management</h1>
+            <p>
+                Securely book appointments, manage doctors, track treatments, 
+                and access medical records—all from one trusted platform.
+            </p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('patient_login') }}" class="cta-primary">
+                    <i class="fas fa-calendar-check"></i> Book Appointment
+                </a>
+                <a href="#features" class="cta-secondary">
+                    <i class="fas fa-play"></i> Learn More
+                </a>
             </div>
         </div>
+    </section>
 
-        <a href="{{ url_for('register') }}" class="signup-btn">Sign Up</a>
-    </div>
-</div>
-
-<!-- ===== Hero Section ===== -->
-<div class="hero">
-    <h1>Hospital Management System</h1>
-    <p>
-        Book appointments, manage doctors, and track treatments —
-        all in one secure platform.
-    </p>
-</div>
-
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-hospital"></i> Pro Hospital</h3>
+                <p>Advanced healthcare management for modern hospitals.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="{{ url_for('patient_login') }}">Patient Portal</a>
+                <a href="{{ url_for('doctor_login') }}">Doctor Portal</a>
+                <a href="{{ url_for('admin_login') }}">Admin Portal</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <a href="#">Appointment Booking</a>
+                <a href="#">Patient Records</a>
+                <a href="#">Doctor Schedules</a>
+                <a href="#">Treatment History</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                <p><i class="fas fa-envelope"></i> info@prohospital.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Delhi, India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Pro Hospital Management System. All rights reserved. | 
+            <a href="#" style="color: #9ca3af;">Privacy Policy</a> | 
+            <a href="#" style="color: #9ca3af;">Terms of Service</a></p>
+        </div>
+    </footer>
 </body>
 </html>

@@ -3,39 +3,450 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login page</title>
+    <title>Doctor Login - Pro Hospital</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: #f8fafc;
+        }
+
+        /* ===== Header ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 0.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 70px;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .login-wrapper { position: relative; }
+        .login-btn {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.3);
+        }
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,107,53,0.4);
+        }
+        .login-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        .login-wrapper:hover .login-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .login-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            text-decoration: none;
+            color: #374151;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .login-dropdown a:last-child { border-bottom: none; }
+        .login-dropdown a:hover {
+            background: linear-gradient(90deg, #2c5aa0, #1e3a8a);
+            color: white;
+            padding-left: 1.5rem;
+        }
+        .signup-btn {
+            background: transparent;
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #2c5aa0, #1e3a8a) border-box;
+            color: #2c5aa0;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(44,90,160,0.2);
+        }
+        .signup-btn:hover {
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(44,90,160,0.4);
+        }
+
+        /* ===== Main Content ===== */
+        .main-content {
+            padding-top: 80px;
+            min-height: calc(100vh - 200px);
+            padding: 2rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ===== Page Hero ===== */
+        .page-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            margin-top: 20px;
+        }
+        .page-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== Cards ===== */
+        .card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2c5aa0, #1e3a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-icon {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* ===== Forms ===== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #2c5aa0;
+            box-shadow: 0 0 0 3px rgba(44,90,160,0.1);
+            background: white;
+        }
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16,185,129,0.4);
+        }
+
+        /* ===== Error Messages ===== */
+        .error-message {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border-left: 4px solid #ef4444;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Flash Messages ===== */
+        .flash-messages {
+            margin-bottom: 1.5rem;
+        }
+        .flash-message {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            border-left: 4px solid #ef4444;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        /* ===== Doctor Info ===== */
+        .doctor-info {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 16px;
+        }
+
+        /* ===== Register Link ===== */
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 4rem 5% 2rem;
+            margin-top: 4rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h3 {
+            color: #2c5aa0;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.2s;
+        }
+        .footer-section a:hover { color: white; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 0.5rem 4%; }
+            .main-content { padding: 2rem 1rem; padding-top: 75px; }
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <h2>Enter your Login credentials</h2>
-        <form action="/doctor/login" method="POST">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-hospital"></i> HMS Portal
+        </div>
+        <div class="nav-actions">
+            <div class="login-wrapper">
+                <button class="login-btn">
+                    <i class="fas fa-user"></i> Login
+                </button>
+                <div class="login-dropdown">
+                    <a href="/patient/login">
+                        <i class="fas fa-user-injured"></i> Patient Login
+                    </a>
+                    <a href="/admin/login">
+                        <i class="fas fa-shield-alt"></i> Admin Login
+                    </a>
+                    <a href="/doctor/login">
+                        <i class="fas fa-user-md"></i> Doctor Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <h1><i class="fas fa-user-md"></i> Doctor Portal</h1>
+            <p>Access your schedule, patient records and hospital systems</p>
+        </section>
+
+        <!-- Login Form -->
+        <div style="max-width: 450px; margin: 0 auto;">
+            <!-- Doctor Info -->
+            <div class="doctor-info">
+                <i class="fas fa-info-circle" style="font-size: 1.2rem; margin-right: 0.5rem;"></i>
+                Contact admin to create your account
+            </div>
+
+            <!-- Flash Messages -->
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
-            <ul>
+                <div class="flash-messages">
                     {% for msg in messages %}
-                    <li style="color:red">{{ msg }}</li>
+                    <div class="flash-message">{{ msg }}</div>
                     {% endfor %}
-            </ul>
+                </div>
                 {% endif %}
             {% endwith %}
 
-            {{ form.hidden_tag() }}
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h2 class="card-title">Doctor Login</h2>
+                </div>
 
-            {{ form.username.label }}
-            {{ form.username() }}
-            {% for error in form.username.errors %}
-                <p style="color:red">{{ error }}</p>
-            {% endfor %}
+                <form action="/doctor/login" method="POST">
+                    {{ form.hidden_tag() }}
 
-            {{ form.password.label }}
-            {{ form.password() }}
-            {% for error in form.password.errors %}
-                <p style="color:red">{{ error }}</p>
-            {% endfor %}
-            {{ form.submit() }}
-            
-        </form>
-        <h4>Don't have an account? Ask Admin To Add You</h4>
+                    <div class="form-group">
+                        {{ form.username.label(class="form-label") }}
+                        {{ form.username(class="form-control") }}
+                        {% for error in form.username.errors %}
+                            <div class="error-message">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control") }}
+                        {% for error in form.password.errors %}
+                            <div class="error-message">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    {{ form.submit(class="btn btn-primary") }}
+                </form>
+
+                <div class="register-link">
+                    <h4>Don't have an account? <strong>Ask Admin To Add You</strong></h4>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-hospital"></i> Pro Hospital</h3>
+                <p>Advanced healthcare management for modern hospitals.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="/patient/login">Patient Portal</a>
+                <a href="/doctor/login">Doctor Portal</a>
+                <a href="/admin/login">Admin Portal</a>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <a href="#">Appointment Booking</a>
+                <a href="#">Patient Records</a>
+                <a href="#">Doctor Schedules</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+                <p><i class="fas fa-envelope"></i> info@prohospital.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Delhi, India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Pro Hospital Management System. All rights reserved. | 
+            <a href="#" style="color: #9ca3af;">Privacy Policy</a> | 
+            <a href="#" style="color: #9ca3af;">Terms of Service</a></p>
+        </div>
+    </footer>
 </body>
 </html>
