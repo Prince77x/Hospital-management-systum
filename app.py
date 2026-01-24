@@ -118,11 +118,7 @@ def admin_dashboard():
     departments = Department.query.all()
     return render_template('./admin/admin_dashboard.html', admin_name=current_user.name, doctors=doctors, patients=patients, departments=departments)
 
-@app.route('/doctor/dashboard')
-@login_required
-def doctor_dashboard():
-    return render_template('./doctor/doctor_dashboard.html')
-
+ 
 @app.route('/admin/add_doctor', methods=["GET","POST"])
 @login_required
 def add_doctor():
@@ -388,6 +384,21 @@ def cancel_appointment(appointment_id):
 
 
 ## DOCTOR ROUTE
+@app.route('/doctor/dashboard')
+@login_required
+def doctor_dashboard():
+    
+    appointments = Appointment.query.filter_by(doctor_id=current_user.id)
+    patient = Patient.query.all()
+    assigned_patients = db.session.query(
+    Patient, Appointment
+    ).join(Appointment, Patient.id == Appointment.patient_id).filter(
+    Appointment.doctor_id == 5
+    ).all()
+     
+    return render_template('./doctor/doctor_dashboard.html',appointments=appointments,assigned_patients=assigned_patients,patient=patient)
+
+
 @app.route('/doctor/doctor_logout')
 @login_required
 def doctor_logout():
@@ -453,6 +464,94 @@ def doctor_availability():
 
     return render_template('./Doctor/provide_availability.html', slots=slots)
 
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_required, current_user
+
+@app.route('/doctor/update_patient/<int:appointment_id>', methods=['GET', 'POST'])
+@login_required
+def update_patient(appointment_id):
+    # 1. Get the appointment, 404 if not found
+    appointment = Appointment.query.get_or_404(appointment_id)
+
+    # 2. (Optional) security: only that doctor can update
+    if appointment.doctor_id != current_user.id:
+        flash("Unauthorized access")
+        return redirect(url_for('doctor_dashboard'))
+
+    if request.method == 'POST':
+        # 3. Read data from form
+        visit_type    = request.form.get('visit_type')
+        tests_done    = request.form.get('tests_done')
+        diagnosis     = request.form.get('diagnosis')
+        prescription  = request.form.get('prescription')
+
+        # 4. Create a Treatment entry linked to this appointment
+        treatment = Treatment(
+            treatment_name = visit_type or "Visit Record",
+            description    = diagnosis or "",
+            appointment_id = appointment.id
+        )
+
+        # 5. If you want to pack history text into description
+        # (since your current Treatment model only has treatment_name + description)
+        details = []
+        if visit_type:
+            details.append(f"Visit Type: {visit_type}")
+        if tests_done:
+            details.append(f"Tests Done: {tests_done}")
+        if diagnosis:
+            details.append(f"Diagnosis: {diagnosis}")
+        if prescription:
+            details.append(f"Prescription: {prescription}")
+        treatment.description = "\n".join(details)
+
+        db.session.add(treatment)
+        db.session.commit()
+
+        flash("Patient history updated successfully")
+        return redirect(url_for('doctor_dashboard'))
+
+    # GET: show form, pass appointment + patient info to template
+    return render_template(
+        'doctor/update_patient.html',
+        appointment=appointment,
+        patient=appointment.patient,
+        doctor=appointment.doctor,
+    )
+
+@app.route('/doctor/patient_details/<int:appointment_id>')
+@login_required
+def doctor_patient_details(appointment_id):
+    appointment = Appointment.query.get_or_404(appointment_id)
+    
+    # Security check
+    if appointment.doctor_id != current_user.id:
+        flash("Unauthorized access")
+        return redirect(url_for('doctor_dashboard'))
+    
+    # Get patient, doctor, treatments (history)
+    patient = appointment.patient
+    doctor = appointment.doctor
+    
+    # All treatments for this patient (across all appointments)
+    treatments = Treatment.query.join(Appointment).filter(
+        Appointment.patient_id == patient.id
+    ).order_by(Treatment.id).all()
+    
+    # Next availability slot for doctor
+    next_slot = DoctorAvailability.query.filter_by(
+        doctor_id=doctor.id,
+        is_available=True
+    ).order_by(DoctorAvailability.date, DoctorAvailability.start_time).first()
+    
+    return render_template(
+        './others/patient_history.html',
+        patient=patient,
+        doctor=doctor,
+        appointment=appointment,
+        treatments=treatments,
+        next_slot=next_slot
+    )
 
 
 '''

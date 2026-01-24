@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Patient History</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .form-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 1px solid #e0e6ed;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .dept-select {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            padding: 8px 15px;
+            color: white;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .dept-select option {
+            background: #667eea;
+            color: white;
+            padding: 10px;
+        }
+        
+        .form-body {
+            padding: 40px 30px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+        
+        .prescription-section {
+            background: #f8f9ff;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            padding: 25px;
+        }
+        
+        .instruction {
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+            border-left: 5px solid #fdcb6e;
+            font-style: italic;
+            color: #2d3436;
+        }
+        
+        .save-button {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: block;
+            margin: 40px auto 0;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(0, 184, 148, 0.3);
+        }
+        
+        .save-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 184, 148, 0.4);
+        }
+        
+        .save-button:active {
+            transform: translateY(-1px);
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-wrapper">
+        <div class="header">
+            <div class="header-info">
+                <div class="info-item">
+                    <span class="info-label">Patient:</span>
+                    <strong>{{patient.pat_name}}</strong>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Department:</span>
+                    <select class="dept-select">
+                        <option selected>Cardiology</option>
+                        <option>Medicine</option>
+                        <option>Neurology</option>
+                        <option>Orthopedics</option>
+                        <option>Pediatrics</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <form method="POST">
+        <div class="form-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Visit Type</label>
+                    <input type="text" class="form-input" placeholder="e.g., Follow-up, Emergency, Routine checkup">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Test Done</label>
+                    <input type="text" class="form-input" placeholder="e.g., ECG, Blood Test, X-Ray">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label class="form-label">Diagnosis</label>
+                    <textarea class="form-textarea" placeholder="Enter detailed diagnosis..."></textarea>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <label class="form-label">Prescription</label>
+                    <textarea class="form-textarea" placeholder="Medicine 1 (1-0-1)
+Medicine 2 (0-1-0)
+Medicine 3 (1-0-1)
+Enter prescription details..."></textarea>
+                </div>
+            </div>
+           </form>
+            <button type="submit" class="save-button">
+                💾 Save History
+            </button>
+        </div>
+    </div>
+</body>
+</html>

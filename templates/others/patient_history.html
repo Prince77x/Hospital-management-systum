@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient History</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .patient-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 30px 20px;
+            padding: 25px;
+            background: #f8f9ff;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .info-group h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #5a6c7d;
+            min-width: 100px;
+        }
+        
+        .history-section {
+            margin: 0 30px 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        .history-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .history-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .history-table tr:hover {
+            background: #f8f9ff;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-inperson {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .availability-section {
+            margin: 0 30px 30px;
+            padding: 25px;
+            background: #fff3cd;
+            border-radius: 12px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .availability-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .patient-info {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .back-btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-row">
+                <div class="page-title">Patient History</div>
+                <a href="{{ url_for('doctor_assigned_patients') }}" class="back-btn">← Back</a>
+            </div>
+        </div>
+
+        <!-- Patient Info -->
+        <div class="patient-info">
+            <div class="info-group">
+                <h4>Patient Details</h4>
+                <div class="info-item">
+                    <span class="info-label">Patient Name:</span>
+                    <strong>{{ patient.pat_name }}</strong>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Patient Age:</span>
+                    <span>{{ patient.pat_age }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Doctor Name:</span>
+                    <span>{{ doctor.doc_name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Department:</span>
+                    <span>{{ doctor.department.dept_name }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Table -->
+        <div class="history-section">
+            <h3>Visit History</h3>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Visit #</th>
+                        <th>Visit Type</th>
+                        <th>Test Done</th>
+                        <th>Diagnosis</th>
+                        <th>Prescription</th>
+                        <th>Medicines</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for treatment in treatments %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <span class="status-badge status-inperson">
+                                {{ treatment.treatment_name.split()[0] if treatment.treatment_name else 'N/A' }}
+                            </span>
+                        </td>
+                        <td>{{ treatment.description.split('Tests:')[1].split(',')[0] if 'Tests:' in treatment.description else 'ECG' }}</td>
+                        <td>{{ treatment.description.split('Diagnosis:')[1].split('Prescription:')[0] if 'Diagnosis:' in treatment.description else 'Normal' }}</td>
+                        <td>{{ treatment.description.split('Prescription:')[1] if 'Prescription:' in treatment.description else 'N/A' }}</td>
+                        <td>Medicine {{ loop.index }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #7f8c8d;">
+                            No history records found
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Doctor Availability -->
+        <div class="availability-section">
+            <div class="availability-title">Doctor's Availability</div>
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <div style="flex: 1;">
+                    <strong>Cardiology Department</strong><br>
+                    <small>Next available: {{ next_slot.date.strftime('%d/%m/%Y') }} {{ next_slot.start_time.strftime('%H:%M') }}</small>
+                </div>
+                <a href="{{ url_for('doctor_availability') }}" class="back-btn" style="padding: 10px 20px; font-size: 14px;">
+                    View Availability →
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

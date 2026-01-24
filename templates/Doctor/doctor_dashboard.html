@@ -162,7 +162,7 @@
           <td>{{ loop.index }}</td>
           <td>{{ appt.patient.pat_name }}</td>
           <td>
-            <a href=" ">
+            <a href="{{ url_for('update_patient',appointment_id = appt.id)}}">
               <button class="btn btn-update">Update</button>
             </a>
           </td>
