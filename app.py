@@ -568,7 +568,7 @@ def datacheckup():
     return jsonify({"admins": admin_list ,"doctors": doctor_list})
 '''
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
 
 
 
